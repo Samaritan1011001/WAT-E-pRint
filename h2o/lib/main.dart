@@ -14,6 +14,11 @@ import 'dart:io';
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:h2o/screens/add_screen.dart';
+import 'package:h2o/screens/goals_screen.dart';
+import 'package:h2o/screens/info_screen.dart';
+import 'package:h2o/screens/settings_screen.dart';
+import 'package:h2o/screens/stats_screen.dart';
 import 'package:intl/intl.dart';
 
 import 'package:flutter/material.dart';
@@ -326,7 +331,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
           ),
         ),
         ExpansionPanelList(
-//      key: Key(key),
           expansionCallback: (int index, bool isExpanded) {
             setState(() {
               data[index].isExpanded = !isExpanded;
@@ -384,13 +388,13 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     ],
                   ),
                   background: Image.asset(
-                    totConsumption!=null?(totConsumption < 110 ? 'assets/1.jpg' : 'assets/4.jpeg'):'assets/1.jpg',
+                    totConsumption != null
+                        ? (totConsumption < 110
+                            ? 'assets/1.jpg'
+                            : 'assets/4.jpeg')
+                        : 'assets/1.jpg',
                     fit: BoxFit.fill,
                   ),
-//                  Image.network(
-//                    "https://images.pexels.com/photos/396547/pexels-photo-396547.jpeg?auto=compress&cs=tinysrgb&h=350",
-//                    fit: BoxFit.cover,
-//                  ),
                 ),
               ),
             ];
@@ -399,283 +403,25 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             children: <Widget>[
               totConsumption == null
                   ? Text("Add an item to view stats")
-                  : ListView(
-                      children: <Widget>[
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: <Widget>[
-                            Icon(Icons.trending_up,color: Colors.grey[600]
-                            ),
-                            Text(
-                              "${double.parse((((totConsumption - 90) / 90) * 100).toStringAsFixed(2))}% from last days",
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.grey[600]
-                              ),
-                            ),
-                          ],
-                        ),
-                        chartWidget,
-                      ],
+                  : StatsScreen(
+                      totConsumption: totConsumption,
+                      chartWidget: chartWidget,
                     ),
-              ListView(
-                children: <Widget>[
-                  ExpansionPanelList(
-                    expansionCallback: (int index, bool isExpanded) {
-                      setState(() {
-                        infoData[index].isExpanded = !isExpanded;
-                      });
-                    },
-                    children: infoData.map<ExpansionPanel>((Item item) {
-                      return ExpansionPanel(
-                        headerBuilder:
-                            (BuildContext context, bool isExpanded) {
-                          return ListTile(
-                            title: Text(
-                              item.headerValue,
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 18),
-                            ),
-                          );
-                        },
-                        body: item.body,
-                        canTapOnHeader: true,
-                        isExpanded: item.isExpanded,
-                      );
-                    }).toList(),
-                  ),
-                ],
+              InfoScreen(
+                infoData: infoData,
               ),
-              ListView.builder(
-                  itemCount: tiles.length,
-                  itemBuilder: (BuildContext context, int index) {
-                    var key = tiles.keys.elementAt(index);
-                    print(key);
-//          <Widget>[
-                    return Card(
-                      elevation: 10,
-                      child: _buildPanel(tiles[key]["data"], key),
-                    );
-//          ],
-                  }),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: <Widget>[
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      SizedBox(
-                          width: 200,
-                          child: Text(
-                            "Use Less than 80 gallons per day",
-                            style: TextStyle(fontSize: 23),
-                          )),
-                      new CircularPercentIndicator(
-                        radius: 150.0,
-                        lineWidth: 10.0,
-                        percent: 1.0,
-//                        center: new Text("${double.parse(((totConsumption/80.0)*100).toStringAsFixed(2))}%"),
-                        center: totConsumption!=null?((totConsumption / 80.0) < 1.0
-                            ? new Icon(
-                                Icons.check,
-                                size: 80,
-                              )
-                            : new Icon(
-                                Icons.clear,
-                                size: 80,
-                              )):new Icon(
-                          Icons.check,
-                          size: 80,
-                        ),
-                        progressColor: totConsumption!=null?((totConsumption / 80.0) < 1.0
-                            ? Colors.blue
-                            : Colors.red):Colors.blue,
-                      )
-                    ],
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: <Widget>[
-                      SizedBox(
-                          width: 200,
-                          child: Text(
-                            "Shower for less than 10 minutes per day for 7 consecutive days",
-                            style: TextStyle(fontSize: 23),
-                          )),
-                      new CircularPercentIndicator(
-                        radius: 150.0,
-                        lineWidth: 10.0,
-                        percent: 0.5,
-                        center: new Text("50%",style: TextStyle(fontSize: 23),),
-                        progressColor: Colors.blue,
-                      )
-                    ],
-                  ),
-                ],
+              AddScreen(tiles: tiles,),
+              GoalsScreen(
+                totConsumption: totConsumption,
               ),
-              Column(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  ListTile(
-                    title: Text(
-                      "Notifications",
-                      style: TextStyle(fontSize: 23),
-                    ),
-                    trailing: Switch(
-                        value: swi,
-                        onChanged: (changedValue) {
-                          setState(() {
-                            swi = !swi;
-                          });
-                        }),
-                  ),
-                  Divider(thickness: 5,),
-//                  Padding(
-//                    padding: const EdgeInsets.all(50.0),
-//                    child: Row(
-//                      mainAxisAlignment: MainAxisAlignment.start,
-//                      children: <Widget>[
-//                        Text("Notifications",style: TextStyle(fontSize: 20),),
-//                        Switch(
-//                            value: swi, onChanged: (changedValue){
-//                          setState(() {
-//                            swi=!swi;
-//                          });
-//                        })
-//                      ],
-//                    ),
-//                  ),
-                  ListTile(
-//                    padding: const EdgeInsets.all(50.0),
-                    title: new DropdownButton<String>(
-                      value: placeholderValue,
-                      style: TextStyle(fontSize: 23),
-//                    icon: Icon(Icons.arrow_downward),
-//                    iconSize: 24,
-                    elevation: 16,
-
-                      items: <String>['United States of America', 'China','Australia']
-                          .map((String value) {
-                        return new DropdownMenuItem<String>(
-                          value: value,
-                          child: new Text(
-                            value,
-                            style: TextStyle(color: Colors.black),
-                          ),
-                        );
-                      }).toList(),
-                      onChanged: (String newValue) {
-                        setState(() {
-                          placeholderValue = newValue;
-                        });
-                      },
-                    ),
-                  ),
-                  Divider(thickness: 5,),
-
-                  ListTile(
-//                    padding: const EdgeInsets.all(50.0),
-                    leading: FlatButton(
-                        onPressed: () async {
-                          final DateTime picked = await showDatePicker(
-                              context: context,
-                              initialDate: selectedDate,
-                              firstDate: DateTime(2015, 8),
-                              lastDate: DateTime(2101));
-                          if (picked != null && picked != selectedDate)
-                            setState(() {
-                              selectedDate = picked;
-                            });
-                        },
-                        child: Text(
-                          "${selectedDate.toLocal()}".split(' ')[0],
-                          style: TextStyle(fontSize: 23),
-                        )),
-                  ),
-
-                ],
-              ),
+              SettingsScreen(placeholderValue: placeholderValue,selectedDate: selectedDate,swi: swi,),
             ],
           ),
-//        addItem
-//            ?
-//            : _widgetOptions.elementAt(_selectedIndex),
         ),
         floatingActionButton: addItem
             ? FloatingActionButton.extended(
-                onPressed: () async {
-                  Map ans = {};
-                  formKeys[0].currentState.save();
-                  List items = [];
-                  csvTable.forEach((product_wf) {
-                    print(product_wf);
-                    items.add(product_wf[0]);
-                  });
-                  if (items.contains("Cereals, nes")) {
-//                print(product_wf);
-                    var multiplier = csvTable[items.indexOf("Cereals, nes")][1];
-                    ans["q1"] =
-                        food_answers["q1"] * 264.172 * multiplier / 1000000;
-                  }
-                  if (items.contains("Vegetables fresh nes")) {
-                    var multiplier =
-                        csvTable[items.indexOf("Vegetables fresh nes")][1];
-//                print("Hereee : $multiplier");
-
-                    ans["q5"] =
-                        food_answers["q5"] * 264.172 * multiplier / 1000000;
-//                print("Hereee : ${food_answers["q5"]}");
-
-                  }
-                  if (items.contains("Fruit Fresh Nes")) {
-                    var multiplier =
-                        csvTable[items.indexOf("Fruit Fresh Nes")][1];
-                    ans["q6"] =
-                        food_answers["q6"] * 264.172 * multiplier / 1000000;
-                  }
-                  if (items.contains("Potatoes")) {
-                    var multiplier = csvTable[items.indexOf("Potatoes")][1];
-                    ans["q7"] =
-                        food_answers["q7"] * 264.172 * multiplier / 1000000;
-                  }
-                  if (items.contains("Cassava")) {
-                    var multiplier = csvTable[items.indexOf("Cassava")][1];
-                    ans["q7"] = ans["q7"] * 264.172 * multiplier / 1000000;
-                  }
-                  if (items.contains("Coffee, green")) {
-                    var multiplier =
-                        csvTable[items.indexOf("Coffee, green")][1];
-                    ans["q8"] =
-                        food_answers["q8"] * 264.172 * multiplier / 1000000;
-                  }
-                  if (items.contains("Tea")) {
-                    var multiplier = csvTable[items.indexOf("Tea")][1];
-                    ans["q9"] =
-                        food_answers["q9"] * 264.172 * multiplier / 1000000;
-                  }
-
-//            print(ans['q1']);
-//            ans["q1"] = food_answers["q1"] * 0.596 * 264.172;
-                  ans["q2"] = food_answers["q2"] * 5.308 * 264.172 / 1000;
-                  ans["q3"] = food_answers["q3"] * 0.693 * 264.172 / 1000;
-                  ans["q4"] = food_answers["q4"] * 0.0753 * 264.172 / 1000;
-//            ans["q5"] = food_answers["q5"] * 0.153 * 264.172;
-//            ans["q6"] = food_answers["q6"] * 0.208 * 264.172;
-//            ans["q7"] = food_answers["q7"] * 0.110 * 264.172;
-//            ans["q8"] = food_answers["q8"] * 0.0392 * 264.172;
-//            ans["q9"] = food_answers["q9"] * 0.0351 * 264.172;
-                  var values = ans.values;
-                  print(ans.values);
-                  var result = values.reduce((sum, element) => sum + element);
-                  print(result);
-                  setState(() {
-                    totConsumption = double.parse((result).toStringAsFixed(2));
-                  });
-                  await prefs.setString(
-                      'food_answers', jsonEncode(food_answers));
-                  await prefs.setDouble('totConsumption', totConsumption);
+                onPressed: () {
+                  _handleFormSubmit();
                 },
                 label: Text('Submit'),
                 backgroundColor: Colors.blue,
@@ -710,6 +456,69 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         ),
       ),
     );
+  }
+
+  _handleFormSubmit() async {
+    Map ans = {};
+    formKeys[0].currentState.save();
+    List items = [];
+    csvTable.forEach((product_wf) {
+      print(product_wf);
+      items.add(product_wf[0]);
+    });
+    if (items.contains("Cereals, nes")) {
+//                print(product_wf);
+      var multiplier = csvTable[items.indexOf("Cereals, nes")][1];
+      ans["q1"] = food_answers["q1"] * 264.172 * multiplier / 1000000;
+    }
+    if (items.contains("Vegetables fresh nes")) {
+      var multiplier = csvTable[items.indexOf("Vegetables fresh nes")][1];
+//                print("Hereee : $multiplier");
+
+      ans["q5"] = food_answers["q5"] * 264.172 * multiplier / 1000000;
+//                print("Hereee : ${food_answers["q5"]}");
+
+    }
+    if (items.contains("Fruit Fresh Nes")) {
+      var multiplier = csvTable[items.indexOf("Fruit Fresh Nes")][1];
+      ans["q6"] = food_answers["q6"] * 264.172 * multiplier / 1000000;
+    }
+    if (items.contains("Potatoes")) {
+      var multiplier = csvTable[items.indexOf("Potatoes")][1];
+      ans["q7"] = food_answers["q7"] * 264.172 * multiplier / 1000000;
+    }
+    if (items.contains("Cassava")) {
+      var multiplier = csvTable[items.indexOf("Cassava")][1];
+      ans["q7"] = ans["q7"] * 264.172 * multiplier / 1000000;
+    }
+    if (items.contains("Coffee, green")) {
+      var multiplier = csvTable[items.indexOf("Coffee, green")][1];
+      ans["q8"] = food_answers["q8"] * 264.172 * multiplier / 1000000;
+    }
+    if (items.contains("Tea")) {
+      var multiplier = csvTable[items.indexOf("Tea")][1];
+      ans["q9"] = food_answers["q9"] * 264.172 * multiplier / 1000000;
+    }
+
+//            print(ans['q1']);
+//            ans["q1"] = food_answers["q1"] * 0.596 * 264.172;
+    ans["q2"] = food_answers["q2"] * 5.308 * 264.172 / 1000;
+    ans["q3"] = food_answers["q3"] * 0.693 * 264.172 / 1000;
+    ans["q4"] = food_answers["q4"] * 0.0753 * 264.172 / 1000;
+//            ans["q5"] = food_answers["q5"] * 0.153 * 264.172;
+//            ans["q6"] = food_answers["q6"] * 0.208 * 264.172;
+//            ans["q7"] = food_answers["q7"] * 0.110 * 264.172;
+//            ans["q8"] = food_answers["q8"] * 0.0392 * 264.172;
+//            ans["q9"] = food_answers["q9"] * 0.0351 * 264.172;
+    var values = ans.values;
+    print(ans.values);
+    var result = values.reduce((sum, element) => sum + element);
+    print(result);
+    setState(() {
+      totConsumption = double.parse((result).toStringAsFixed(2));
+    });
+    await prefs.setString('food_answers', jsonEncode(food_answers));
+    await prefs.setDouble('totConsumption', totConsumption);
   }
 
   List<Item> generateItems(int numberOfItems, answers, key) {
