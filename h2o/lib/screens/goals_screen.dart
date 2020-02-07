@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:h2o/blocs/foot_print/foot_print_bloc.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
 class GoalsScreen extends StatelessWidget {
-  double totConsumption = 0;
-  GoalsScreen({this.totConsumption});
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -18,26 +18,29 @@ class GoalsScreen extends StatelessWidget {
                   "Use Less than 80 gallons per day",
                   style: TextStyle(fontSize: 23),
                 )),
-            new CircularPercentIndicator(
-              radius: 150.0,
-              lineWidth: 10.0,
-              percent: 1.0,
+            BlocBuilder<FootPrintBloc, FootPrintState>(
+                builder: (context, state)  {
+              return  new CircularPercentIndicator(
+                radius: 150.0,
+                lineWidth: 10.0,
+                percent: 1.0,
 //                        center: new Text("${double.parse(((totConsumption/80.0)*100).toStringAsFixed(2))}%"),
-              center: totConsumption!=null?((totConsumption / 80.0) < 1.0
-                  ? new Icon(
-                Icons.check,
-                size: 80,
-              )
-                  : new Icon(
-                Icons.clear,
-                size: 80,
-              )):new Icon(
-                Icons.check,
-                size: 80,
-              ),
-              progressColor: totConsumption!=null?((totConsumption / 80.0) < 1.0
-                  ? Colors.blue
-                  : Colors.red):Colors.blue,
+                center: state.totConsumption!=null?((state.totConsumption / 80.0) < 1.0
+                    ? new Icon(
+                  Icons.check,
+                  size: 80,
+                )
+                    : new Icon(
+                  Icons.clear,
+                  size: 80,
+                )):new Icon(
+                  Icons.check,
+                  size: 80,
+                ),
+                progressColor: state.totConsumption!=null?((state.totConsumption / 80.0) < 1.0
+                    ? Colors.blue
+                    : Colors.red):Colors.blue,
+              );}
             )
           ],
         ),

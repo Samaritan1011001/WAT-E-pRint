@@ -89,8 +89,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   initState() {
     super.initState();
-
-
     for (int i = 0; i < 3; i++) {
       formKeys.add(GlobalKey<FormState>());
     }
@@ -143,8 +141,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   void _onItemTapped(int index) async {
     print(index);
     if (index == 0) {
-      print("tapped");
-      print(totConsumption);
+//      print("tapped");
+//      print(totConsumption);
       setState(() {
         data[0].gallons = totConsumption;
         _selectedIndex = index;
@@ -183,7 +181,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
-//    FootPrintBloc bloc = FootPrintBloc();
+    FootPrintBloc fpBloc = BlocProvider.of<FootPrintBloc>(context);
     bool swi = false;
 //    DateTime selectedDate = DateTime.now();
     return DefaultTabController(
@@ -222,8 +220,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       ],
                     ),
                     background: Image.asset(
-                      totConsumption != null
-                          ? (totConsumption < 110
+                      fpBloc.state.totConsumption != null
+                          ? (fpBloc.state.totConsumption < 110
                           ? 'assets/1.jpg'
                           : 'assets/4.jpeg')
                           : 'assets/1.jpg',
@@ -235,19 +233,17 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             },
             body: TabBarView(
               children: <Widget>[
-                totConsumption == null
+                fpBloc.state.totConsumption == null
                     ? Text("Add an item to view stats")
                     : StatsScreen(
-                  totConsumption: totConsumption,
+//                  totConsumption: totConsumption,
                   chartWidget: chartWidget,
                 ),
                 InfoScreen(
                   infoData: infoData,
                 ),
                 AddScreen(tiles: tiles,),
-                GoalsScreen(
-                  totConsumption: totConsumption,
-                ),
+                GoalsScreen(),
                 SettingsScreen(placeholderValue: placeholderValue,
                   selectedDate: selectedDate,
                   swi: swi,),
@@ -349,9 +345,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 //            ans["q8"] = food_answers["q8"] * 0.0392 * 264.172;
 //            ans["q9"] = food_answers["q9"] * 0.0351 * 264.172;
     var values = ans.values;
-    print(ans.values);
+//    print(ans.values);
     var result = values.reduce((sum, element) => sum + element);
-    print(result);
+//    print(result);
     local_bloc.add(UpdateTotCons(totConsumption: double.parse((result).toStringAsFixed(2))));
 //    setState(() {
 //      totConsumption = double.parse((result).toStringAsFixed(2));
@@ -361,8 +357,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   }
 
   List<Item> generateItems(int numberOfItems, answers, key) {
-    print("TESTTT");
-    print(answers);
+//    print("TESTTT");
+//    print(answers);
     List<Item> items = [];
 
 //    return items;
