@@ -14,6 +14,8 @@ import 'dart:io';
 import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:h2o/blocs/foot_print/foot_print_bloc.dart';
 import 'package:h2o/screens/add_screen.dart';
 import 'package:h2o/screens/goals_screen.dart';
 import 'package:h2o/screens/info_screen.dart';
@@ -26,17 +28,9 @@ import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
 import 'package:csv/csv.dart';
-import 'package:url_launcher/url_launcher.dart';
 
 void main() => runApp(MyApp());
-_launchURL(url) async {
-//  const url = 'https://flutter.dev';
-  if (await canLaunch(url)) {
-    await launch(url, forceWebView: true);
-  } else {
-    throw 'Could not launch $url';
-  }
-}
+
 
 // stores ExpansionPanel state information
 class Item {
@@ -69,7 +63,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: _title,
-      home: MyStatefulWidget(),
+      home: BlocProvider(
+          create: (BuildContext context) => FootPrintBloc(),
+          child: MyStatefulWidget()),
     );
   }
 }
@@ -93,145 +89,13 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   initState() {
     super.initState();
-    infoData = [
-      Item(
-        headerValue: "How can I reduce my water footprint?",
-        body: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: <Widget>[
-              Text(
-                "Do not leave the water running while brushing teeth or washing your hands.",
-                style: TextStyle(fontSize: 17),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                "Install a dual-flush toilet system. It will save up to 11 cubic metres of water per year! ",
-                style: TextStyle(fontSize: 17),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                "Take showers sharter than 10 minutes long.",
-                style: TextStyle(fontSize: 17),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Text(
-                "If you only have a few dishes, do not wash it in the dish washer. Either wait till there's more, or wash by hand.",
-                style: TextStyle(fontSize: 17),
-              ),
-            ],
-          ),
-        ),
-      ),
-      Item(
-          headerValue: "Why should we care?",
-          body: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                Text(
-                  "To guard against rising costs and potential conflict in times of water shortage or difficulties in food production.",
-                  style: TextStyle(fontSize: 17),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  "It minimizes the effects of droughts and water shortages.",
-                  style: TextStyle(fontSize: 17),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  "Helps to preserve our environment and lessen the toll on global warming.",
-                  style: TextStyle(fontSize: 17),
-                ),
-                SizedBox(
-                  height: 10,
-                ),
-                Text(
-                  "To better distribute water usage to other purposes.",
-                  style: TextStyle(fontSize: 17),
-                ),
-              ],
-            ),
-          )),
-      Item(
-          headerValue: "Useful resources",
-          body: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                GestureDetector(
-                    onTap: () {
-                      _launchURL(
-                          "https://www.constellation.com/energy-101/water-conservation-tips0.html");
-                    },
-                    child: Text(
-                      "Information on vegetables",
-                      style: TextStyle(
-                          fontSize: 20,
-                          decoration: TextDecoration.underline,
-                          color: Colors.blueAccent),
-                    )),
-                GestureDetector(
-                    onTap: () {
-                      _launchURL("https://wateruseitwisely.com/");
-                    },
-                    child: Text(
-                      "Water Use It Wisely",
-                      style: TextStyle(
-                          fontSize: 20,
-                          decoration: TextDecoration.underline,
-                          color: Colors.blueAccent),
-                    )),
-                GestureDetector(
-                    onTap: () {
-                      _launchURL(
-                          "https://www.thebalancesmb.com/conservation-efforts-why-should-we-save-water-3157877");
-                    },
-                    child: Text(
-                      "5 Reasons We Should Care About Saving Water",
-                      style: TextStyle(
-                          fontSize: 20,
-                          decoration: TextDecoration.underline,
-                          color: Colors.blueAccent),
-                    )),
-                GestureDetector(
-                    onTap: () {
-                      _launchURL(
-                          "https://www.volusia.org/services/growth-and-resource-management/environmental-management/natural-resources/water-conservation/25-ways-to-save-water.stml");
-                    },
-                    child: Text(
-                      " 25 ways to save water",
-                      style: TextStyle(
-                          fontSize: 20,
-                          decoration: TextDecoration.underline,
-                          color: Colors.blueAccent),
-                    )),
-              ],
-            ),
-          )),
-    ];
-//    _data = generateItems(3);
+
+
     for (int i = 0; i < 3; i++) {
       formKeys.add(GlobalKey<FormState>());
     }
     selectedDate = DateTime.now();
-
     initial();
-
-//    DateTime now = DateTime.now();
   }
 
   var myData;
@@ -274,8 +138,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       child: chart,
     ),
   );
-  static const TextStyle optionStyle =
-      TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
+
 
   void _onItemTapped(int index) async {
     print(index);
@@ -318,110 +181,85 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     }
   }
 
-  Widget _buildPanel(data, key) {
-    print("Key -> ${key}");
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Text(
-            key,
-            style: TextStyle(fontSize: 20),
-          ),
-        ),
-        ExpansionPanelList(
-          expansionCallback: (int index, bool isExpanded) {
-            setState(() {
-              data[index].isExpanded = !isExpanded;
-            });
-          },
-          children: data.map<ExpansionPanel>((Item item) {
-            return ExpansionPanel(
-              canTapOnHeader: true,
-              headerBuilder: (BuildContext context, bool isExpanded) {
-                return ListTile(
-                  title: Text(
-                    item.headerValue,
-                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-                  ),
-                );
-              },
-              body: item.body,
-              isExpanded: item.isExpanded,
-            );
-          }).toList(),
-        ),
-      ],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
+//    FootPrintBloc bloc = FootPrintBloc();
     bool swi = false;
 //    DateTime selectedDate = DateTime.now();
     return DefaultTabController(
       length: 5,
       child: Scaffold(
-        body: NestedScrollView(
-          headerSliverBuilder: (BuildContext context, bool innerBoxIsScrolled) {
-            return <Widget>[
-              SliverAppBar(
-                expandedHeight: 200.0,
-                floating: true,
-                pinned: true,
-                flexibleSpace: FlexibleSpaceBar(
-                  centerTitle: true,
-                  title: Column(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      Text(
-                        "Daily Water Use",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 16.0,
+        body: BlocBuilder<FootPrintBloc, FootPrintState>(
+//          bloc: bloc,
+        builder: (context, state) {
+          return NestedScrollView(
+            headerSliverBuilder: (BuildContext context,
+                bool innerBoxIsScrolled) {
+              return <Widget>[
+                SliverAppBar(
+                  expandedHeight: 200.0,
+                  floating: true,
+                  pinned: true,
+                  flexibleSpace: FlexibleSpaceBar(
+                    centerTitle: true,
+                    title: Column(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: <Widget>[
+                        Text(
+                          "Daily Water Use",
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16.0,
+                          ),
                         ),
-                      ),
 //                      SizedBox(height: 100,),
-                      Text(
-                          "Footprint: ${totConsumption == null ? 0 : totConsumption} ga"),
-                    ],
-                  ),
-                  background: Image.asset(
-                    totConsumption != null
-                        ? (totConsumption < 110
-                            ? 'assets/1.jpg'
-                            : 'assets/4.jpeg')
-                        : 'assets/1.jpg',
-                    fit: BoxFit.fill,
+                        Text(
+                            "Footprint: ${state.totConsumption == null
+                                ? 0
+                                : state.totConsumption} ga"),
+//                      Text(
+//                          "Footprint: ${totConsumption == null ? 0 : totConsumption} ga"),
+                      ],
+                    ),
+                    background: Image.asset(
+                      totConsumption != null
+                          ? (totConsumption < 110
+                          ? 'assets/1.jpg'
+                          : 'assets/4.jpeg')
+                          : 'assets/1.jpg',
+                      fit: BoxFit.fill,
+                    ),
                   ),
                 ),
-              ),
-            ];
-          },
-          body: TabBarView(
-            children: <Widget>[
-              totConsumption == null
-                  ? Text("Add an item to view stats")
-                  : StatsScreen(
-                      totConsumption: totConsumption,
-                      chartWidget: chartWidget,
-                    ),
-              InfoScreen(
-                infoData: infoData,
-              ),
-              AddScreen(tiles: tiles,),
-              GoalsScreen(
-                totConsumption: totConsumption,
-              ),
-              SettingsScreen(placeholderValue: placeholderValue,selectedDate: selectedDate,swi: swi,),
-            ],
-          ),
+              ];
+            },
+            body: TabBarView(
+              children: <Widget>[
+                totConsumption == null
+                    ? Text("Add an item to view stats")
+                    : StatsScreen(
+                  totConsumption: totConsumption,
+                  chartWidget: chartWidget,
+                ),
+                InfoScreen(
+                  infoData: infoData,
+                ),
+                AddScreen(tiles: tiles,),
+                GoalsScreen(
+                  totConsumption: totConsumption,
+                ),
+                SettingsScreen(placeholderValue: placeholderValue,
+                  selectedDate: selectedDate,
+                  swi: swi,),
+              ],
+            ),
+          );
+        },
         ),
         floatingActionButton: addItem
             ? FloatingActionButton.extended(
                 onPressed: () {
-                  _handleFormSubmit();
+                  _handleFormSubmit(BlocProvider.of<FootPrintBloc>(context));
                 },
                 label: Text('Submit'),
                 backgroundColor: Colors.blue,
@@ -458,7 +296,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     );
   }
 
-  _handleFormSubmit() async {
+  _handleFormSubmit(local_bloc) async {
     Map ans = {};
     formKeys[0].currentState.save();
     List items = [];
@@ -514,9 +352,10 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     print(ans.values);
     var result = values.reduce((sum, element) => sum + element);
     print(result);
-    setState(() {
-      totConsumption = double.parse((result).toStringAsFixed(2));
-    });
+    local_bloc.add(UpdateTotCons(totConsumption: double.parse((result).toStringAsFixed(2))));
+//    setState(() {
+//      totConsumption = double.parse((result).toStringAsFixed(2));
+//    });
     await prefs.setString('food_answers', jsonEncode(food_answers));
     await prefs.setDouble('totConsumption', totConsumption);
   }
