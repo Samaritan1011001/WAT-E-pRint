@@ -5,10 +5,8 @@ import 'package:url_launcher/url_launcher.dart';
 
 
 class InfoScreen extends StatefulWidget {
-  List<Item> infoData;
 
-  InfoScreen({Key key,this.infoData}) : super(key: key);
-
+  List<Item> infoData=[];
   @override
   _InfoScreenState createState() => _InfoScreenState();
 }
@@ -19,7 +17,7 @@ class _InfoScreenState extends State<InfoScreen> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    widget.infoData = [
+   widget.infoData = [
       Item(
         headerValue: "How can I reduce my water footprint?",
         body: Padding(

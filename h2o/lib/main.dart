@@ -106,45 +106,17 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     print("CSV fields ${csvTable}");
 
     prefs = await SharedPreferences.getInstance();
-    setState(() {
-      totConsumption = prefs.getDouble("totConsumption");
-      data[0] = new GallonsPerDay(formattedDate, totConsumption);
-    });
+//    setState(() {
+//      totConsumption = prefs.getDouble("totConsumption");
+//    });
   }
 
-  static var data = [
-    new GallonsPerDay(formattedDate, totConsumption),
-    new GallonsPerDay("Sep 25 Jan", 90),
-    new GallonsPerDay("Sep 24 Jan", 80),
-  ];
-  static var series = [
-    new charts.Series(
-      id: 'Clicks',
-      domainFn: (GallonsPerDay clickData, _) => clickData.day,
-      measureFn: (GallonsPerDay clickData, _) => clickData.gallons,
-      data: data,
-    ),
-  ];
-  static var chart = new charts.BarChart(
-    series,
-    animate: true,
-  );
-  static var chartWidget = new Padding(
-    padding: new EdgeInsets.all(32.0),
-    child: new SizedBox(
-      height: 350.0,
-      child: chart,
-    ),
-  );
 
 
   void _onItemTapped(int index) async {
     print(index);
     if (index == 0) {
-//      print("tapped");
-//      print(totConsumption);
       setState(() {
-        data[0].gallons = totConsumption;
         _selectedIndex = index;
         addItem = false;
       });
@@ -237,10 +209,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                     ? Text("Add an item to view stats")
                     : StatsScreen(
 //                  totConsumption: totConsumption,
-                  chartWidget: chartWidget,
+//                  chartWidget: chartWidget,
                 ),
                 InfoScreen(
-                  infoData: infoData,
                 ),
                 AddScreen(tiles: tiles,),
                 GoalsScreen(),
