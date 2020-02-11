@@ -211,8 +211,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 //                  totConsumption: totConsumption,
 //                  chartWidget: chartWidget,
                 ),
-                InfoScreen(
-                ),
+                InfoScreen(),
                 AddScreen(tiles: tiles,),
                 GoalsScreen(),
                 SettingsScreen(placeholderValue: placeholderValue,
@@ -328,18 +327,23 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
   }
 
   List<Item> generateItems(int numberOfItems, answers, key) {
-//    print("TESTTT");
-//    print(answers);
     List<Item> items = [];
 
-//    return items;
-    return [
+    return
+//    return mapData.map<Item>((Map tileData){
+//      return
+//        Item(
+//        headerValue: tileData.keys.toList()[0]
+//      );
+//    }).toList();
+      [
       Item(
         headerValue: 'Food',
         body: Form(
           key: formKeys[0],
           child: Column(
-            children: <Widget>[
+            children:
+            <Widget>[
               ListTile(
                 title: Text("Cereal Products"),
                 trailing: Container(
@@ -584,6 +588,34 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
     ];
   }
 }
+
+List<Map> mapData = [
+    {
+      "id":"15 Sep 2020",
+      "food":{
+        "question_answers":{
+          "Cereal Products":"",
+          "Meat products":"",
+          "Dairy products":"",
+          "Eggs":"",
+          "Vegetables":"",
+          "Fruits":"",
+          "Starchy roots (potatoes, cassava)":"",
+          "How many cups of coffee do you take per day?":"",
+        }
+      },
+      "Indoor Activities":{
+        "question_answers":{
+          "How many baths per day?":""
+        },
+      },
+      "Outdoor Activities":{
+        "question_answers":{
+          "How many car washes per week?":""
+        },
+      },
+    },
+  ];
 
 class GallonsPerDay {
   String day;
