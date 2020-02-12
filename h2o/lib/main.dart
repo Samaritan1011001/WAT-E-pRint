@@ -31,7 +31,6 @@ import 'package:csv/csv.dart';
 
 void main() => runApp(MyApp());
 
-
 // stores ExpansionPanel state information
 class Item {
   Item({
@@ -111,8 +110,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 //    });
   }
 
-
-
   void _onItemTapped(int index) async {
     print(index);
     if (index == 0) {
@@ -161,66 +158,68 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       child: Scaffold(
         body: BlocBuilder<FootPrintBloc, FootPrintState>(
 //          bloc: bloc,
-        builder: (context, state) {
-          return NestedScrollView(
-            headerSliverBuilder: (BuildContext context,
-                bool innerBoxIsScrolled) {
-              return <Widget>[
-                SliverAppBar(
-                  expandedHeight: 200.0,
-                  floating: true,
-                  pinned: true,
-                  flexibleSpace: FlexibleSpaceBar(
-                    centerTitle: true,
-                    title: Column(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: <Widget>[
-                        Text(
-                          "Daily Water Use",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16.0,
+          builder: (context, state) {
+            return NestedScrollView(
+              headerSliverBuilder:
+                  (BuildContext context, bool innerBoxIsScrolled) {
+                return <Widget>[
+                  SliverAppBar(
+                    expandedHeight: 200.0,
+                    floating: true,
+                    pinned: true,
+                    flexibleSpace: FlexibleSpaceBar(
+                      centerTitle: true,
+                      title: Column(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: <Widget>[
+                          Text(
+                            "Daily Water Use",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16.0,
+                            ),
                           ),
-                        ),
 //                      SizedBox(height: 100,),
-                        Text(
-                            "Footprint: ${state.totConsumption == null
-                                ? 0
-                                : state.totConsumption} ga"),
+                          Text(
+                              "Footprint: ${state.totConsumption == null ? 0 : state.totConsumption} ga"),
 //                      Text(
 //                          "Footprint: ${totConsumption == null ? 0 : totConsumption} ga"),
-                      ],
-                    ),
-                    background: Image.asset(
-                      fpBloc.state.totConsumption != null
-                          ? (fpBloc.state.totConsumption < 110
-                          ? 'assets/1.jpg'
-                          : 'assets/4.jpeg')
-                          : 'assets/1.jpg',
-                      fit: BoxFit.fill,
+                        ],
+                      ),
+                      background: Image.asset(
+                        fpBloc.state.totConsumption != null
+                            ? (fpBloc.state.totConsumption < 110
+                                ? 'assets/1.jpg'
+                                : 'assets/4.jpeg')
+                            : 'assets/1.jpg',
+                        fit: BoxFit.fill,
+                      ),
                     ),
                   ),
-                ),
-              ];
-            },
-            body: TabBarView(
-              children: <Widget>[
-                fpBloc.state.totConsumption == null
-                    ? Text("Add an item to view stats")
-                    : StatsScreen(
+                ];
+              },
+              body: TabBarView(
+                children: <Widget>[
+                  fpBloc.state.totConsumption == null
+                      ? Text("Add an item to view stats")
+                      : StatsScreen(
 //                  totConsumption: totConsumption,
 //                  chartWidget: chartWidget,
-                ),
-                InfoScreen(),
-                AddScreen(tiles: tiles,),
-                GoalsScreen(),
-                SettingsScreen(placeholderValue: placeholderValue,
-                  selectedDate: selectedDate,
-                  swi: swi,),
-              ],
-            ),
-          );
-        },
+                          ),
+                  InfoScreen(),
+                  AddScreen(
+                    mapData: mapData,
+                  ),
+                  GoalsScreen(),
+                  SettingsScreen(
+                    placeholderValue: placeholderValue,
+                    selectedDate: selectedDate,
+                    swi: swi,
+                  ),
+                ],
+              ),
+            );
+          },
         ),
         floatingActionButton: addItem
             ? FloatingActionButton.extended(
@@ -318,7 +317,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 //    print(ans.values);
     var result = values.reduce((sum, element) => sum + element);
 //    print(result);
-    local_bloc.add(UpdateTotCons(totConsumption: double.parse((result).toStringAsFixed(2))));
+    local_bloc.add(UpdateTotCons(
+        totConsumption: double.parse((result).toStringAsFixed(2))));
 //    setState(() {
 //      totConsumption = double.parse((result).toStringAsFixed(2));
 //    });
@@ -336,14 +336,13 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 //        headerValue: tileData.keys.toList()[0]
 //      );
 //    }).toList();
-      [
+        [
       Item(
         headerValue: 'Food',
         body: Form(
           key: formKeys[0],
           child: Column(
-            children:
-            <Widget>[
+            children: <Widget>[
               ListTile(
                 title: Text("Cereal Products"),
                 trailing: Container(
@@ -590,32 +589,36 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 }
 
 List<Map> mapData = [
-    {
-      "id":"15 Sep 2020",
-      "food":{
-        "question_answers":{
-          "Cereal Products":"",
-          "Meat products":"",
-          "Dairy products":"",
-          "Eggs":"",
-          "Vegetables":"",
-          "Fruits":"",
-          "Starchy roots (potatoes, cassava)":"",
-          "How many cups of coffee do you take per day?":"",
+  {
+    "id": "15 Sep 2020",
+    "sections": [
+      {
+        "name": "food",
+        "isExpanded":false,
+        "question_answers": {
+          "Cereal Products": "",
+          "Meat products": "",
+          "Dairy products": "",
+          "Eggs": "",
+          "Vegetables": "",
+          "Fruits": "",
+          "Starchy roots (potatoes, cassava)": "",
+          "How many cups of coffee do you take per day?": "",
         }
       },
-      "Indoor Activities":{
-        "question_answers":{
-          "How many baths per day?":""
-        },
+      {
+        "name": "Indoor Activities",
+        "isExpanded":false,
+        "question_answers": {"How many baths per day?": ""},
       },
-      "Outdoor Activities":{
-        "question_answers":{
-          "How many car washes per week?":""
-        },
+      {
+        "name": "Outdoor Activities",
+        "isExpanded":false,
+        "question_answers": {"How many car washes per week?": ""},
       },
-    },
-  ];
+    ],
+  },
+];
 
 class GallonsPerDay {
   String day;

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:h2o/main.dart';
 
 class AddScreen extends StatefulWidget {
-  Map tiles = {};
-  AddScreen({this.tiles});
+  List mapData = [];
+  AddScreen({this.mapData});
 
   @override
   _AddScreenState createState() => _AddScreenState();
@@ -13,47 +13,78 @@ class _AddScreenState extends State<AddScreen> {
   @override
   Widget build(BuildContext context) {
     return ListView.builder(
-        itemCount: widget.tiles.length,
+        itemCount: mapData.length,
         itemBuilder: (BuildContext context, int index) {
-          var key = widget.tiles.keys.elementAt(index);
-          print(key);
           return Card(
             elevation: 10,
-            child: _buildPanel(widget.tiles[key]["data"], key),
+            child: _buildPanel(mapData[index]),
           );
         });
   }
-  Widget _buildPanel(data, key) {
-    print("Key -> ${key}");
+
+  Widget _buildPanel(data) {
+    List expansionList = [];
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Padding(
           padding: const EdgeInsets.all(8.0),
           child: Text(
-            key,
+            data["id"],
             style: TextStyle(fontSize: 20),
           ),
         ),
         ExpansionPanelList(
           expansionCallback: (int index, bool isExpanded) {
             setState(() {
-              data[index].isExpanded = !isExpanded;
+              data["sections"][index]['isExpanded'] = !data["sections"][index]['isExpanded'];
             });
           },
-          children: data.map<ExpansionPanel>((Item item) {
+          children: data['sections'].map<ExpansionPanel>((Map item) {
+            List qs = item['question_answers'].keys.toList();
             return ExpansionPanel(
               canTapOnHeader: true,
+              isExpanded: item['isExpanded'],
               headerBuilder: (BuildContext context, bool isExpanded) {
                 return ListTile(
                   title: Text(
-                    item.headerValue,
+                    item['name'],
                     style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                 );
               },
-              body: item.body,
-              isExpanded: item.isExpanded,
+              body: Form(
+                child: Column(
+                  children: qs.map<Widget>((q) {
+//                    print("Entry : ${q.value}");
+                    return ListTile(
+                      title: Text(q),
+                      trailing: Container(
+                        width: 150,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.end,
+                          children: <Widget>[
+                            SizedBox(
+                              width: 50.0,
+                              child: TextFormField(
+                                keyboardType: TextInputType.number,
+                                initialValue: item['question_answers'][q],
+                                onSaved: (text) {
+                                  print(text);
+//                              food_answers["q1"] = double.parse(text);
+//                              print(food_answers);
+                                },
+                              ),
+                            ),
+                            Text("grams"),
+                          ],
+                        ),
+                      ),
+                    );
+                  }).toList(),
+                ),
+              ),
+//              isExpanded: item.isExpanded,
             );
           }).toList(),
         ),
@@ -61,5 +92,3 @@ class _AddScreenState extends State<AddScreen> {
     );
   }
 }
-
-
