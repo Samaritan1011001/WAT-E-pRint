@@ -88,6 +88,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   initState() {
     super.initState();
+    print("today's date : ${DateFormat('EE d MMM').format(DateTime.now())}");
     for (int i = 0; i < 3; i++) {
       formKeys.add(GlobalKey<FormState>());
     }
@@ -221,15 +222,15 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             );
           },
         ),
-        floatingActionButton: addItem
-            ? FloatingActionButton.extended(
-                onPressed: () {
-                  _handleFormSubmit(BlocProvider.of<FootPrintBloc>(context));
-                },
-                label: Text('Submit'),
-                backgroundColor: Colors.blue,
-              )
-            : null,
+//        floatingActionButton: addItem
+//            ? FloatingActionButton.extended(
+//                onPressed: () {
+//                  _handleFormSubmit(BlocProvider.of<FootPrintBloc>(context));
+//                },
+//                label: Text('Submit'),
+//                backgroundColor: Colors.blue,
+//              )
+//            : null,
         bottomNavigationBar: TabBar(
           tabs: [
             Tab(
@@ -270,17 +271,12 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       items.add(product_wf[0]);
     });
     if (items.contains("Cereals, nes")) {
-//                print(product_wf);
       var multiplier = csvTable[items.indexOf("Cereals, nes")][1];
       ans["q1"] = food_answers["q1"] * 264.172 * multiplier / 1000000;
     }
     if (items.contains("Vegetables fresh nes")) {
       var multiplier = csvTable[items.indexOf("Vegetables fresh nes")][1];
-//                print("Hereee : $multiplier");
-
       ans["q5"] = food_answers["q5"] * 264.172 * multiplier / 1000000;
-//                print("Hereee : ${food_answers["q5"]}");
-
     }
     if (items.contains("Fruit Fresh Nes")) {
       var multiplier = csvTable[items.indexOf("Fruit Fresh Nes")][1];
@@ -303,25 +299,14 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
       ans["q9"] = food_answers["q9"] * 264.172 * multiplier / 1000000;
     }
 
-//            print(ans['q1']);
-//            ans["q1"] = food_answers["q1"] * 0.596 * 264.172;
     ans["q2"] = food_answers["q2"] * 5.308 * 264.172 / 1000;
     ans["q3"] = food_answers["q3"] * 0.693 * 264.172 / 1000;
     ans["q4"] = food_answers["q4"] * 0.0753 * 264.172 / 1000;
-//            ans["q5"] = food_answers["q5"] * 0.153 * 264.172;
-//            ans["q6"] = food_answers["q6"] * 0.208 * 264.172;
-//            ans["q7"] = food_answers["q7"] * 0.110 * 264.172;
-//            ans["q8"] = food_answers["q8"] * 0.0392 * 264.172;
-//            ans["q9"] = food_answers["q9"] * 0.0351 * 264.172;
+
     var values = ans.values;
-//    print(ans.values);
     var result = values.reduce((sum, element) => sum + element);
-//    print(result);
     local_bloc.add(UpdateTotCons(
         totConsumption: double.parse((result).toStringAsFixed(2))));
-//    setState(() {
-//      totConsumption = double.parse((result).toStringAsFixed(2));
-//    });
     await prefs.setString('food_answers', jsonEncode(food_answers));
     await prefs.setDouble('totConsumption', totConsumption);
   }
@@ -590,31 +575,31 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
 List<Map> mapData = [
   {
-    "id": "15 Sep 2020",
+    "id": "Wed 12 Feb",
     "sections": [
       {
         "name": "food",
         "isExpanded":false,
         "question_answers": {
-          "Cereal Products": "",
-          "Meat products": "",
-          "Dairy products": "",
-          "Eggs": "",
-          "Vegetables": "",
-          "Fruits": "",
-          "Starchy roots (potatoes, cassava)": "",
-          "How many cups of coffee do you take per day?": "",
+          "Cereal Products": "0.0",
+          "Meat products": "0.0",
+          "Dairy products": "0.0",
+          "Eggs": "0.0",
+          "Vegetables": "0.0",
+          "Fruits": "0.0",
+          "Starchy roots (potatoes, cassava)": "0.0",
+          "How many cups of coffee do you take per day?": "0.0",
         }
       },
       {
         "name": "Indoor Activities",
         "isExpanded":false,
-        "question_answers": {"How many baths per day?": ""},
+        "question_answers": {"How many baths per day?": "0.0"},
       },
       {
         "name": "Outdoor Activities",
         "isExpanded":false,
-        "question_answers": {"How many car washes per week?": ""},
+        "question_answers": {"How many car washes per week?": "0.0"},
       },
     ],
   },
