@@ -34,7 +34,8 @@ class _AddScreenState extends State<AddScreen> {
               child: RaisedButton(
                 onPressed: () {
                   Map questionAnswers = {};
-                  int ind = mapData.indexWhere((data)=>data["id"]==DateFormat('EE d MMM').format(DateTime.now()));
+//                  int ind = mapData.indexWhere((data)=>data["id"]==DateFormat('EE d MMM').format(DateTime.now()));
+                  int ind = mapData.indexWhere((data)=>data["id"]=="Wed 12 Feb");
                   formKeys[ind].currentState.save();
                   mapData[ind]["sections"].forEach((sec){
                     questionAnswers.addAll(sec["question_answers"]);

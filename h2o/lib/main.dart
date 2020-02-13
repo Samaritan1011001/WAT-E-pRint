@@ -1,13 +1,3 @@
-// Flutter code sample for BottomNavigationBar
-
-// This example shows a [BottomNavigationBar] as it is used within a [Scaffold]
-// widget. The [BottomNavigationBar] has three [BottomNavigationBarItem]
-// widgets and the [currentIndex] is set to index 0. The selected item is
-// amber. The `_onItemTapped` function changes the selected item's index
-// and displays a corresponding message in the center of the [Scaffold].
-//
-// ![A scaffold with a bottom navigation bar containing three bottom navigation
-// bar items. The first one is selected.](https://flutter.github.io/assets-for-api-docs/assets/material/bottom_navigation_bar.png)
 
 import 'dart:convert';
 import 'dart:io';
@@ -88,28 +78,14 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   initState() {
     super.initState();
-    print("today's date : ${DateFormat('EE d MMM').format(DateTime.now())}");
-    for (int i = 0; i < 3; i++) {
-      formKeys.add(GlobalKey<FormState>());
-    }
     selectedDate = DateTime.now();
-    initial();
   }
 
   var myData;
   DateTime selectedDate;
   List<List<dynamic>> csvTable;
-  initial() async {
-    myData = await rootBundle.loadString("assets/data.csv");
-    csvTable = CsvToListConverter().convert(myData);
 
-    print("CSV fields ${csvTable}");
 
-    prefs = await SharedPreferences.getInstance();
-//    setState(() {
-//      totConsumption = prefs.getDouble("totConsumption");
-//    });
-  }
 
   void _onItemTapped(int index) async {
     print(index);
@@ -119,24 +95,26 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         addItem = false;
       });
     } else if (index == 2) {
-//      prefs.setString("food_answers", Map().toString());
-      if (prefs.getString("food_answers") != null)
-        food_answers = jsonDecode(prefs.getString("food_answers"));
+//      if (prefs.getString("food_answers") != null)
+//        food_answers = jsonDecode(prefs.getString("food_answers"));
       setState(() {
 //      tiles.clear();
-        if (tiles.keys.isNotEmpty) {
-          tiles.keys.forEach((k) {
-            tiles.update(
-              k,
-              (existingValue) => {"data": generateItems(3, food_answers, k)},
-              ifAbsent: () => {"data": generateItems(3, food_answers, k)},
-            );
-          });
-        } else {
-          tiles[formattedDate] = {
-            "data": generateItems(3, food_answers, formattedDate)
-          };
-        }
+//        if (tiles.keys.isNotEmpty) {
+//          tiles.keys.forEach((k) {
+//            tiles.update(
+//              k,
+//                  (existingValue) =>
+//              {
+//                "data": generateItems(3, food_answers, k)
+//              },
+//              ifAbsent: () => {"data": generateItems(3, food_answers, k)},
+//            );
+//          });
+//        } else {
+//          tiles[formattedDate] = {
+//            "data": generateItems(3, food_answers, formattedDate)
+//          };
+//        }
 
 //      tiles[now.toString()] = {"data":generateItems(3,food_answers,now.toString())};
         addItem = true;
@@ -182,7 +160,9 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                           ),
 //                      SizedBox(height: 100,),
                           Text(
-                              "Footprint: ${state.totConsumption == null ? 0 : state.totConsumption} ga"),
+                              "Footprint: ${state.totConsumption == null
+                                  ? 0
+                                  : state.totConsumption} ga"),
 //                      Text(
 //                          "Footprint: ${totConsumption == null ? 0 : totConsumption} ga"),
                         ],
@@ -190,8 +170,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       background: Image.asset(
                         fpBloc.state.totConsumption != null
                             ? (fpBloc.state.totConsumption < 110
-                                ? 'assets/1.jpg'
-                                : 'assets/4.jpeg')
+                            ? 'assets/1.jpg'
+                            : 'assets/4.jpeg')
                             : 'assets/1.jpg',
                         fit: BoxFit.fill,
                       ),
@@ -206,7 +186,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                       : StatsScreen(
 //                  totConsumption: totConsumption,
 //                  chartWidget: chartWidget,
-                          ),
+                  ),
                   InfoScreen(),
                   AddScreen(
                     mapData: mapData,
@@ -222,15 +202,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             );
           },
         ),
-//        floatingActionButton: addItem
-//            ? FloatingActionButton.extended(
-//                onPressed: () {
-//                  _handleFormSubmit(BlocProvider.of<FootPrintBloc>(context));
-//                },
-//                label: Text('Submit'),
-//                backgroundColor: Colors.blue,
-//              )
-//            : null,
         bottomNavigationBar: TabBar(
           tabs: [
             Tab(
@@ -260,316 +231,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
         ),
       ),
     );
-  }
-
-  _handleFormSubmit(local_bloc) async {
-    Map ans = {};
-    formKeys[0].currentState.save();
-    List items = [];
-    csvTable.forEach((product_wf) {
-      print(product_wf);
-      items.add(product_wf[0]);
-    });
-    if (items.contains("Cereals, nes")) {
-      var multiplier = csvTable[items.indexOf("Cereals, nes")][1];
-      ans["q1"] = food_answers["q1"] * 264.172 * multiplier / 1000000;
-    }
-    if (items.contains("Vegetables fresh nes")) {
-      var multiplier = csvTable[items.indexOf("Vegetables fresh nes")][1];
-      ans["q5"] = food_answers["q5"] * 264.172 * multiplier / 1000000;
-    }
-    if (items.contains("Fruit Fresh Nes")) {
-      var multiplier = csvTable[items.indexOf("Fruit Fresh Nes")][1];
-      ans["q6"] = food_answers["q6"] * 264.172 * multiplier / 1000000;
-    }
-    if (items.contains("Potatoes")) {
-      var multiplier = csvTable[items.indexOf("Potatoes")][1];
-      ans["q7"] = food_answers["q7"] * 264.172 * multiplier / 1000000;
-    }
-    if (items.contains("Cassava")) {
-      var multiplier = csvTable[items.indexOf("Cassava")][1];
-      ans["q7"] = ans["q7"] * 264.172 * multiplier / 1000000;
-    }
-    if (items.contains("Coffee, green")) {
-      var multiplier = csvTable[items.indexOf("Coffee, green")][1];
-      ans["q8"] = food_answers["q8"] * 264.172 * multiplier / 1000000;
-    }
-    if (items.contains("Tea")) {
-      var multiplier = csvTable[items.indexOf("Tea")][1];
-      ans["q9"] = food_answers["q9"] * 264.172 * multiplier / 1000000;
-    }
-
-    ans["q2"] = food_answers["q2"] * 5.308 * 264.172 / 1000;
-    ans["q3"] = food_answers["q3"] * 0.693 * 264.172 / 1000;
-    ans["q4"] = food_answers["q4"] * 0.0753 * 264.172 / 1000;
-
-    var values = ans.values;
-    var result = values.reduce((sum, element) => sum + element);
-    local_bloc.add(UpdateTotCons(
-        totConsumption: double.parse((result).toStringAsFixed(2))));
-    await prefs.setString('food_answers', jsonEncode(food_answers));
-    await prefs.setDouble('totConsumption', totConsumption);
-  }
-
-  List<Item> generateItems(int numberOfItems, answers, key) {
-    List<Item> items = [];
-
-    return
-//    return mapData.map<Item>((Map tileData){
-//      return
-//        Item(
-//        headerValue: tileData.keys.toList()[0]
-//      );
-//    }).toList();
-        [
-      Item(
-        headerValue: 'Food',
-        body: Form(
-          key: formKeys[0],
-          child: Column(
-            children: <Widget>[
-              ListTile(
-                title: Text("Cereal Products"),
-                trailing: Container(
-                  width: 150,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      SizedBox(
-                        width: 50.0,
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          initialValue: answers.containsKey("q1")
-                              ? answers["q1"].toString()
-                              : "0.0",
-                          onSaved: (text) {
-                            print(text.runtimeType);
-                            food_answers["q1"] = double.parse(text);
-                            print(food_answers);
-                          },
-                        ),
-                      ),
-                      Text("grams"),
-                    ],
-                  ),
-                ),
-              ),
-              ListTile(
-                title: Text("Meat products"),
-                trailing: Container(
-                  width: 150,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      SizedBox(
-                        width: 50.0,
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          initialValue: answers.containsKey("q2")
-                              ? answers["q2"].toString()
-                              : "0.0",
-                          onSaved: (text) {
-                            food_answers["q2"] = double.parse(text);
-                            print(food_answers);
-                          },
-                        ),
-                      ),
-                      Text("grams"),
-                    ],
-                  ),
-                ),
-              ),
-              ListTile(
-                title: Text("Dairy products"),
-                trailing: Container(
-                  width: 150,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      SizedBox(
-                        width: 50.0,
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          initialValue: answers.containsKey("q3")
-                              ? answers["q3"].toString()
-                              : "0.0",
-                          onSaved: (text) {
-                            food_answers["q3"] = double.parse(text);
-                            print(food_answers);
-                          },
-                        ),
-                      ),
-                      Text("grams"),
-                    ],
-                  ),
-                ),
-              ),
-              ListTile(
-                title: Text("Eggs"),
-                trailing: Container(
-                  width: 150,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      SizedBox(
-                        width: 50.0,
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          initialValue: answers.containsKey("q4")
-                              ? answers["q4"].toString()
-                              : "0.0",
-                          onSaved: (text) {
-                            food_answers["q4"] = double.parse(text);
-                            print(food_answers);
-                          },
-                        ),
-                      ),
-                      Text("grams"),
-                    ],
-                  ),
-                ),
-              ),
-              ListTile(
-                title: Text("Vegetables"),
-                trailing: Container(
-                  width: 150,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      SizedBox(
-                        width: 50.0,
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          initialValue: answers.containsKey("q5")
-                              ? answers["q5"].toString()
-                              : "0.0",
-                          onSaved: (text) {
-                            food_answers["q5"] = double.parse(text);
-                            print("Hereee : ${food_answers["q5"]}");
-                          },
-                        ),
-                      ),
-                      Text("grams"),
-                    ],
-                  ),
-                ),
-              ),
-              ListTile(
-                title: Text("Fruits"),
-                trailing: Container(
-                  width: 150,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      SizedBox(
-                        width: 50.0,
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          initialValue: answers.containsKey("q6")
-                              ? answers["q6"].toString()
-                              : "0.0",
-                          onSaved: (text) {
-                            food_answers["q6"] = double.parse(text);
-                            print(food_answers);
-                          },
-                        ),
-                      ),
-                      Text("grams"),
-                    ],
-                  ),
-                ),
-              ),
-              ListTile(
-                title: Text("Starchy roots (potatoes, cassava)"),
-                trailing: Container(
-                  width: 150,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      SizedBox(
-                        width: 50.0,
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          initialValue: answers.containsKey("q7")
-                              ? answers["q7"].toString()
-                              : "0.0",
-                          onSaved: (text) {
-                            food_answers["q7"] = double.parse(text);
-                            print(food_answers);
-                          },
-                        ),
-                      ),
-                      Text("grams"),
-                    ],
-                  ),
-                ),
-              ),
-              ListTile(
-                title: Text("How many cups of coffee do you take per day?"),
-                trailing: Container(
-                  width: 150,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      SizedBox(
-                        width: 50.0,
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          initialValue: answers.containsKey("q8")
-                              ? answers["q8"].toString()
-                              : "0.0",
-                          onSaved: (text) {
-                            food_answers["q8"] = double.parse(text);
-                            print(food_answers);
-                          },
-                        ),
-                      ),
-                      Text("cups"),
-                    ],
-                  ),
-                ),
-              ),
-              ListTile(
-                title: Text("How many cups of tea do you take per day?"),
-                trailing: Container(
-                  width: 150,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: <Widget>[
-                      SizedBox(
-                        width: 50.0,
-                        child: TextFormField(
-                          keyboardType: TextInputType.number,
-                          initialValue: answers.containsKey("q9")
-                              ? answers["q9"].toString()
-                              : "0.0",
-                          onSaved: (text) {
-                            food_answers["q9"] = double.parse(text);
-                            print(food_answers);
-                          },
-                        ),
-                      ),
-                      Text("cups"),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-        expandedValue: 'How many meals per day?',
-      ),
-      Item(
-        headerValue: 'Indoor activities',
-        body: Container(),
-        expandedValue: 'How many baths per day?',
-      ),
-      Item(
-        headerValue: 'Outdoor activities',
-        body: Container(),
-        expandedValue: 'How many car washes per week?',
-      ),
-    ];
   }
 }
 
@@ -605,9 +266,3 @@ List<Map> mapData = [
   },
 ];
 
-class GallonsPerDay {
-  String day;
-  double gallons;
-
-  GallonsPerDay(this.day, this.gallons);
-}
