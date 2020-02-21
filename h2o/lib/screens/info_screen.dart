@@ -158,7 +158,7 @@ class _InfoScreenState extends State<InfoScreen> {
               widget.infoData[index].isExpanded = !isExpanded;
             });
           },
-          children: widget.infoData.map<ExpansionPanel>((Item item) {
+          children: widget.infoData?.map<ExpansionPanel>((Item item) {
             return ExpansionPanel(
               headerBuilder:
                   (BuildContext context, bool isExpanded) {
@@ -174,7 +174,7 @@ class _InfoScreenState extends State<InfoScreen> {
               canTapOnHeader: true,
               isExpanded: item.isExpanded,
             );
-          }).toList(),
+          })?.toList(),
         ),
       ],
     );

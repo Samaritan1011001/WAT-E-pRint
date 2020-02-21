@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'package:bloc/bloc.dart';
 import 'package:csv/csv.dart';
+import 'package:equatable/equatable.dart';
 import 'package:flutter/services.dart';
 import 'package:meta/meta.dart';
+import 'package:equatable/equatable.dart';
 
 part 'foot_print_event.dart';
 
@@ -15,25 +17,23 @@ class FootPrintBloc extends Bloc<FootPrintEvent, FootPrintState> {
   @override
   Stream<FootPrintState> mapEventToState(FootPrintEvent event) async* {
     if(event is UpdateTotCons){
-//      print("Received new tot: ${event.totConsumption}");
-
       yield UpdatePrint(event.totConsumption);
-    }else if (event is ItemAdded){
-
+    } else if (event is ItemAdded){
+//      yield NewItem();
       yield* _mapItemAddedToState(event);
     }
   }
-  Stream<AddItem> _mapItemAddedToState(ItemAdded event) async*{
+  Stream<NewItem> _mapItemAddedToState(ItemAdded event) async*{
     var myData;
-    List<List<dynamic>> csvTable;
-    myData = await rootBundle.loadString("assets/data.csv");
-    csvTable = CsvToListConverter().convert(myData);
-//    print("CSV fields ${csvTable}");
-    List items = [];
-    csvTable.forEach((product_wf) {
-//      print(product_wf);
-      items.add(product_wf[0]);
-    });
+//    List<List<dynamic>> csvTable;
+//    myData = await rootBundle.loadString("assets/data.csv");
+//    csvTable = CsvToListConverter().convert(myData);
+////    print("CSV fields ${csvTable}");
+//    List items = [];
+//    csvTable.forEach((product_wf) {
+////      print(product_wf);
+//      items.add(product_wf[0]);
+//    });
     Map questionAnswers = event.questionAnswers;
 
 //    if (items.contains("Cereals, nes")) {
@@ -68,16 +68,18 @@ class FootPrintBloc extends Bloc<FootPrintEvent, FootPrintState> {
 //    ans["q2"] = food_answers["q2"] * 5.308 * 264.172 / 1000;
 //    ans["q3"] = food_answers["q3"] * 0.693 * 264.172 / 1000;
 //    ans["q4"] = food_answers["q4"] * 0.0753 * 264.172 / 1000;
-    print("questionAnswers : ${questionAnswers.values.runtimeType}");
 
-    List values = questionAnswers.values.toList();
-    double result=0.0;
-    values.forEach((value){
-      result+=double.parse(value);
-    });
-
-    UpdateTotCons(
-        totConsumption: double.parse((result).toStringAsFixed(2)));
-    yield AddItem(double.parse((result).toStringAsFixed(2)));
+//    print("questionAnswers : ${questionAnswers.values.runtimeType}");
+//
+//    List values = questionAnswers.values.toList();
+//    double result=0.0;
+//    values.forEach((value){
+//      result+=double.parse(value);
+//    });
+//
+//    UpdateTotCons(
+//        totConsumption: double.parse((result).toStringAsFixed(2)));
+//    yield NewItem(totConsumption:double.parse((result).toStringAsFixed(2)));
+    yield NewItem(totConsumption:double.parse((0).toStringAsFixed(2)));
   }
 }

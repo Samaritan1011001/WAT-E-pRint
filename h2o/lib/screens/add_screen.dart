@@ -26,6 +26,17 @@ class _AddScreenState extends State<AddScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
       children: <Widget>[
+
+        Flexible(
+          child: ListView.builder(
+              itemCount: mapData.length,
+              itemBuilder: (BuildContext context, int index) {
+                return Card(
+                  elevation: 10,
+                  child: _buildPanel(mapData[index],index),
+                );
+              }),
+        ),
         Padding(
           padding: const EdgeInsets.all(2.0),
           child: Container(
@@ -40,7 +51,7 @@ class _AddScreenState extends State<AddScreen> {
                   mapData[ind]["sections"].forEach((sec){
                     questionAnswers.addAll(sec["question_answers"]);
                   });
-//                  print("questionAnswers : ${questionAnswers}");
+                  print("questionAnswers : ${questionAnswers}");
                   BlocProvider.of<FootPrintBloc>(context).add(ItemAdded(questionAnswers: questionAnswers));
                 },
                 child: Text(
@@ -54,16 +65,6 @@ class _AddScreenState extends State<AddScreen> {
                   ),
                 ),
               )),
-        ),
-        Flexible(
-          child: ListView.builder(
-              itemCount: mapData.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Card(
-                  elevation: 10,
-                  child: _buildPanel(mapData[index],index),
-                );
-              }),
         ),
       ],
     );
