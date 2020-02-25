@@ -69,17 +69,17 @@ class FootPrintBloc extends Bloc<FootPrintEvent, FootPrintState> {
 //    ans["q3"] = food_answers["q3"] * 0.693 * 264.172 / 1000;
 //    ans["q4"] = food_answers["q4"] * 0.0753 * 264.172 / 1000;
 
-//    print("questionAnswers : ${questionAnswers.values.runtimeType}");
 //
-//    List values = questionAnswers.values.toList();
-//    double result=0.0;
-//    values.forEach((value){
-//      result+=double.parse(value);
-//    });
-//
+    List values = questionAnswers.values.toList();
+    double result=0.0;
+    values.forEach((value){
+      result+=double.parse(value);
+    });
+
+    print("result : ${result}");
 //    UpdateTotCons(
 //        totConsumption: double.parse((result).toStringAsFixed(2)));
-//    yield NewItem(totConsumption:double.parse((result).toStringAsFixed(2)));
-    yield NewItem(totConsumption:double.parse((0).toStringAsFixed(2)));
+    yield NewItem(totConsumption:double.parse((result).toStringAsFixed(2)));
+//    yield NewItem(totConsumption:double.parse((0).toStringAsFixed(2)));
   }
 }

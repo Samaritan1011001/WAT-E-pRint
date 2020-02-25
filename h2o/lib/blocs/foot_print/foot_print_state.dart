@@ -1,8 +1,8 @@
 part of 'foot_print_bloc.dart';
 
-abstract class FootPrintState extends Equatable {
-  @override
-  List<Object> get props => [];
+abstract class FootPrintState {
+//  @override
+//  List<Object> get props => [];
 
   final double totConsumption;
   const FootPrintState(this.totConsumption);

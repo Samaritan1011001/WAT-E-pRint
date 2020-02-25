@@ -51,6 +51,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData.dark(),
       title: _title,
       home: BlocProvider(
           create: (BuildContext context) => FootPrintBloc(),
@@ -129,7 +130,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
-    FootPrintBloc fpBloc = BlocProvider.of<FootPrintBloc>(context);
+//    FootPrintBloc fpBloc = BlocProvider.of<FootPrintBloc>(context);
     bool swi = false;
 //    DateTime selectedDate = DateTime.now();
     return DefaultTabController(
@@ -168,8 +169,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                         ],
                       ),
                       background: Image.asset(
-                        fpBloc.state.totConsumption != null
-                            ? (fpBloc.state.totConsumption < 110
+                        state.totConsumption != null
+                            ? (state.totConsumption < 110
                             ? 'assets/1.jpg'
                             : 'assets/4.jpeg')
                             : 'assets/1.jpg',
@@ -181,7 +182,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
               },
               body: TabBarView(
                 children: <Widget>[
-                  fpBloc.state.totConsumption == null
+                  state.totConsumption == null
                       ? Text("Add an item to view stats")
                       : StatsScreen(
 //                  totConsumption: totConsumption,
