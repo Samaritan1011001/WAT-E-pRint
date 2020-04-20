@@ -12,6 +12,7 @@ The flutter app is in the folder h2o
 2. The theme specification is under lib/themes
 3. All the blocs (state management) files are under lib/blocs 
 
+
 To run, 
 1. cd h2o
 2. flutter run
