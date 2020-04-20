@@ -16,14 +16,12 @@ class FootPrintBloc extends Bloc<FootPrintEvent, FootPrintState> {
 
   @override
   Stream<FootPrintState> mapEventToState(FootPrintEvent event) async* {
-    if(event is UpdateTotCons){
-      yield UpdatePrint(event.totConsumption);
-    } else if (event is ItemAdded){
+    if (event is UpdateFootPrint){
 //      yield NewItem();
       yield* _mapItemAddedToState(event);
     }
   }
-  Stream<NewItem> _mapItemAddedToState(ItemAdded event) async*{
+  Stream<UpdatedFootPrint> _mapItemAddedToState(UpdateFootPrint event) async*{
     var myData;
 //    List<List<dynamic>> csvTable;
 //    myData = await rootBundle.loadString("assets/data.csv");
@@ -79,7 +77,7 @@ class FootPrintBloc extends Bloc<FootPrintEvent, FootPrintState> {
     print("result : ${result}");
 //    UpdateTotCons(
 //        totConsumption: double.parse((result).toStringAsFixed(2)));
-    yield NewItem(totConsumption:double.parse((result).toStringAsFixed(2)));
+    yield UpdatedFootPrint(totConsumption:double.parse((result).toStringAsFixed(2)));
 //    yield NewItem(totConsumption:double.parse((0).toStringAsFixed(2)));
   }
 }

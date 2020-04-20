@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:h2o/blocs/foot_print/foot_print_bloc.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
+import 'package:h2o/blocs/foot_print/theme/theme_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -31,10 +32,7 @@ class StatsScreen extends StatelessWidget {
                   Icon(Icons.trending_up, color: Colors.grey[600]),
                   Text(
                     "${double.parse((((state.totConsumption - 90) / 90) * 100).toStringAsFixed(2))}% from last days",
-                    style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.grey[600]),
+                    style: BlocProvider.of<ThemeBloc>(context).state.themeData.textTheme.headline2,
                   ),
                 ],
               ),

@@ -8,12 +8,8 @@ abstract class FootPrintState {
   const FootPrintState(this.totConsumption);
 }
 
-class UpdatePrint extends FootPrintState{
-  const UpdatePrint(double totConsumption) : super(totConsumption);
-}
-
-class NewItem extends FootPrintState {
-  NewItem({double totConsumption}):super(totConsumption);
+class UpdatedFootPrint extends FootPrintState {
+  UpdatedFootPrint({double totConsumption}):super(totConsumption);
 }
 
 class InitialFootPrintState extends FootPrintState {

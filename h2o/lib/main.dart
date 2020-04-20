@@ -6,6 +6,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:h2o/blocs/foot_print/foot_print_bloc.dart';
+import 'package:h2o/blocs/foot_print/theme/theme_bloc.dart';
 import 'package:h2o/screens/add_screen.dart';
 import 'package:h2o/screens/goals_screen.dart';
 import 'package:h2o/screens/info_screen.dart';
@@ -49,13 +50,26 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<FootPrintBloc>(
+          create: (BuildContext context) => FootPrintBloc(),
+        ),
+        BlocProvider<ThemeBloc>(
+          create: (BuildContext context) => ThemeBloc(),
+        ),
+      ],
+      child: BlocBuilder<ThemeBloc, ThemeState>(
+        builder: _buildWithTheme,
+      ),
+    );
+  }
+  Widget _buildWithTheme(BuildContext context, ThemeState state) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData.dark(),
+      theme: state.themeData,
       title: _title,
-      home: BlocProvider(
-          create: (BuildContext context) => FootPrintBloc(),
-          child: MyStatefulWidget()),
+      home: MyStatefulWidget(),
     );
   }
 }
@@ -155,7 +169,6 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                           Text(
                             "Daily Water Use",
                             style: TextStyle(
-                              color: Colors.white,
                               fontSize: 16.0,
                             ),
                           ),
@@ -164,8 +177,7 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
                               "Footprint: ${state.totConsumption == null
                                   ? 0
                                   : state.totConsumption} ga"),
-//                      Text(
-//                          "Footprint: ${totConsumption == null ? 0 : totConsumption} ga"),
+
                         ],
                       ),
                       background: Image.asset(

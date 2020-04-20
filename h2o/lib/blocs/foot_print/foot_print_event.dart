@@ -4,12 +4,7 @@ abstract class FootPrintEvent {
   const FootPrintEvent();
 }
 
-class UpdateTotCons extends FootPrintEvent{
-  final double totConsumption;
-  const UpdateTotCons({this.totConsumption});
-}
-
-class ItemAdded extends FootPrintEvent{
+class UpdateFootPrint extends FootPrintEvent{
   final Map questionAnswers;
-  const ItemAdded({this.questionAnswers});
+  const UpdateFootPrint({this.questionAnswers});
 }

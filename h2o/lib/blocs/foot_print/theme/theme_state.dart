@@ -1,6 +1,19 @@
 part of 'theme_bloc.dart';
 
 @immutable
-abstract class ThemeState {}
+class ThemeState extends Equatable {
+  final ThemeData themeData;
+  final bool switchValue;
 
-class InitialThemeState extends ThemeState {}
+  ThemeState({
+    @required this.themeData,
+    @required this.switchValue,
+  }) : super([themeData]);
+}
+
+class InitialThemeState extends ThemeState {
+  InitialThemeState(bool switchValue,ThemeData themeData) : super(switchValue:switchValue,themeData:themeData);
+
+  @override
+  bool get switchValue => super.switchValue;
+}

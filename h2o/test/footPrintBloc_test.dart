@@ -20,14 +20,14 @@ void main() {
       final expectedResponse = [
         InitialFootPrintState(0),
 //        UpdatePrint(0),
-        NewItem(),
+        UpdatedFootPrint(),
       ];
       expectLater(
         footPrintBloc,
         emitsInOrder(expectedResponse),
       );
 
-      footPrintBloc.add(ItemAdded(questionAnswers: {
+      footPrintBloc.add(UpdateFootPrint(questionAnswers: {
         "Cereal Products": "0.0",
         "Meat products": "0.0",
         "Dairy products": "0.0",

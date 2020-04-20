@@ -15,7 +15,6 @@ class AddScreen extends StatefulWidget {
 class _AddScreenState extends State<AddScreen> {
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     mapData.forEach((data){
       widget.formKeys.add(GlobalKey<FormState>());
@@ -52,7 +51,7 @@ class _AddScreenState extends State<AddScreen> {
                     questionAnswers.addAll(sec["question_answers"]);
                   });
                   print("questionAnswers : ${questionAnswers}");
-                  BlocProvider.of<FootPrintBloc>(context).add(ItemAdded(questionAnswers: questionAnswers));
+                  BlocProvider.of<FootPrintBloc>(context).add(UpdateFootPrint(questionAnswers: questionAnswers));
                 },
                 child: Text(
                   "Submit",
