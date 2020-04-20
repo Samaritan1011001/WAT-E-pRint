@@ -3,7 +3,7 @@ A Flutter app to track to water footprint for an individual. This is a product o
 
 Here is a preview of how it looks:
 
-![preview](https://github.com/Samaritan1011001/WAT-E-pRint/blob/master/demo.mp4)
+![preview](https://github.com/Samaritan1011001/WAT-E-pRint/blob/master/demo.gif)
 
 The folder structure:
 
