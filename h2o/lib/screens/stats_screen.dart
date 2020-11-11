@@ -17,8 +17,6 @@ class StatsScreen extends StatelessWidget {
 //    new GallonsPerDay("Sep 24 Jan", 80),
 //  ];
 
-
-
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<FootPrintBloc, FootPrintState>(
@@ -36,12 +34,11 @@ class StatsScreen extends StatelessWidget {
                   ),
                 ],
               ),
-              _buildChart([
-                new GallonsPerDay(DateFormat('EE d MMM').format(DateTime.now()),
-                    state.totConsumption)
-              ]),
+              _buildChart([new GallonsPerDay(DateFormat('EE d MMM').format(DateTime.now()), state.totConsumption)]),
             ],
           );
+        } else if (state.totConsumption == null) {
+          return Text("Add an item to view stats");
         } else {
           return Center(
             child: Column(

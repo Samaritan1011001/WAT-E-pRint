@@ -4,90 +4,110 @@ import 'package:h2o/blocs/foot_print/foot_print_bloc.dart';
 import 'package:h2o/main.dart';
 import 'package:intl/intl.dart';
 
+Map mapData =
+  {
+    "id": "1",
+    "date": DateTime.now(),
+    "sections": [
+      {
+        "name": "Food",
+        "isExpanded": false,
+        "question_answers": {
+          "Cereal Products": "0.0",
+          "Meat products": "0.0",
+          "Dairy products": "0.0",
+          "Eggs": "0.0",
+          "Vegetables": "0.0",
+          "Fruits": "0.0",
+          "Starchy roots (potatoes, cassava)": "0.0",
+          "How many cups of coffee do you take per day?": "0.0",
+        }
+      },
+      {
+        "name": "Indoor Activities",
+        "isExpanded": false,
+        "question_answers": {"How many baths per day?": "0.0"},
+      },
+      {
+        "name": "Outdoor Activities",
+        "isExpanded": false,
+        "question_answers": {"How many car washes per week?": "0.0"},
+      },
+    ],
+  };
+
 class AddScreen extends StatefulWidget {
-  List mapData = [];
-  AddScreen({this.mapData});
+  AddScreen();
   List<GlobalKey<FormState>> formKeys = [];
+  DateTime selectedDate = DateTime.now();
+
   @override
   _AddScreenState createState() => _AddScreenState();
 }
 
 class _AddScreenState extends State<AddScreen> {
+  List<GlobalKey<FormState>> formKeys = [GlobalKey<FormState>()];
+  GlobalKey<FormState> formKey = GlobalKey<FormState>();
+
   @override
   void initState() {
     super.initState();
-    mapData.forEach((data){
-      widget.formKeys.add(GlobalKey<FormState>());
-    });
+//    mapData[0]["date"] = widget.selectedDate;
+//    mapData.forEach((data) {
+//      widget.formKeys.add(GlobalKey<FormState>());
+//    });
   }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.end,
-      children: <Widget>[
-
-        Flexible(
-          child: ListView.builder(
-              itemCount: mapData.length,
-              itemBuilder: (BuildContext context, int index) {
-                return Card(
-                  elevation: 10,
-                  child: _buildPanel(mapData[index],index),
-                );
-              }),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(2.0),
-          child: Container(
-              width: 150,
-              height: 50,
-              child: RaisedButton(
-                onPressed: () {
-                  Map questionAnswers = {};
-//                  int ind = mapData.indexWhere((data)=>data["id"]==DateFormat('EE d MMM').format(DateTime.now()));
-                  int ind = mapData.indexWhere((data)=>data["id"]=="Wed 12 Feb");
-                  formKeys[ind].currentState.save();
-                  mapData[ind]["sections"].forEach((sec){
-                    questionAnswers.addAll(sec["question_answers"]);
-                  });
-                  print("questionAnswers : ${questionAnswers}");
-                  BlocProvider.of<FootPrintBloc>(context).add(UpdateFootPrint(questionAnswers: questionAnswers));
-                },
-                child: Text(
-                  "Submit",
-                  style: TextStyle(color: Colors.white, fontSize: 20),
-                ),
-                color: Colors.blue,
-                shape: ContinuousRectangleBorder(
-                  borderRadius: BorderRadius.all(
-                    Radius.circular(100),
-                  ),
-                ),
-              )),
-        ),
+    return ListView(
+      children: [
+        _buildPanel(mapData),
       ],
     );
   }
 
-  Widget _buildPanel(data,ind) {
-
+  Widget _buildPanel(data) {
     return Form(
-      key: formKeys[ind],
+      key: formKey,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Text(
-              data["id"],
-              style: TextStyle(fontSize: 20),
+          ListTile(
+            leading: FlatButton(
+                onPressed: () async {
+                  final DateTime picked =
+                      await showDatePicker(context: context, initialDate: widget.selectedDate, firstDate: DateTime(2015, 8), lastDate: DateTime(2101));
+                  if (picked != null && picked != widget.selectedDate)
+                    setState(() {
+                      widget.selectedDate = picked;
+                    });
+                },
+                child: Text(
+                  "${new DateFormat.yMMMMd('en_US').format(widget.selectedDate)}",
+                  style: TextStyle(fontSize: 23),
+                )),
+            trailing: FlatButton(
+              onPressed: () {
+                Map questionAnswers = {};
+//                  int ind = mapData.indexWhere((data)=>data["id"]==DateFormat('EE d MMM').format(DateTime.now()));
+//                int ind = mapData.indexWhere((data) => data["id"] == "1");
+                formKey.currentState.save();
+                mapData["sections"].forEach((sec) {
+                  questionAnswers.addAll(sec["question_answers"]);
+                });
+                print("questionAnswers : ${questionAnswers}");
+                BlocProvider.of<FootPrintBloc>(context).add(UpdateFootPrint(questionAnswers: questionAnswers));
+              },
+              color: Colors.teal,
+              child: Text("Submit"),
             ),
           ),
+
           ExpansionPanelList(
             expansionCallback: (int index, bool isExpanded) {
               setState(() {
-                data["sections"][index]['isExpanded'] =
-                    !data["sections"][index]['isExpanded'];
+                data["sections"][index]['isExpanded'] = !data["sections"][index]['isExpanded'];
               });
             },
             children: data['sections'].map<ExpansionPanel>((Map item) {
@@ -120,8 +140,7 @@ class _AddScreenState extends State<AddScreen> {
                                 initialValue: item['question_answers'][q],
                                 onSaved: (text) {
                                   print(text);
-                                  item['question_answers'][q] =
-                                      text;
+                                  item['question_answers'][q] = text;
 //                              print(food_answers);
                                 },
                               ),

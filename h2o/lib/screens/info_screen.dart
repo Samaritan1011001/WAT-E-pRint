@@ -1,23 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:h2o/main.dart';
+import 'package:h2o/models/item.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-
-
 class InfoScreen extends StatefulWidget {
-
-  List<Item> infoData=[];
+  List<Item> infoData = [];
   @override
   _InfoScreenState createState() => _InfoScreenState();
 }
 
 class _InfoScreenState extends State<InfoScreen> {
-
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-   widget.infoData = [
+    widget.infoData = [
       Item(
         headerValue: "How can I reduce my water footprint?",
         body: Padding(
@@ -90,64 +87,53 @@ class _InfoScreenState extends State<InfoScreen> {
             ),
           )),
       Item(
-          headerValue: "Useful resources",
-          body: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: <Widget>[
-                GestureDetector(
-                    onTap: () {
-                      _launchURL(
-                          "https://www.constellation.com/energy-101/water-conservation-tips0.html");
-                    },
-                    child: Text(
-                      "Information on vegetables",
-                      style: TextStyle(
-                          fontSize: 20,
-                          decoration: TextDecoration.underline,
-                          color: Colors.blueAccent),
-                    )),
-                GestureDetector(
-                    onTap: () {
-                      _launchURL("https://wateruseitwisely.com/");
-                    },
-                    child: Text(
-                      "Water Use It Wisely",
-                      style: TextStyle(
-                          fontSize: 20,
-                          decoration: TextDecoration.underline,
-                          color: Colors.blueAccent),
-                    )),
-                GestureDetector(
-                    onTap: () {
-                      _launchURL(
-                          "https://www.thebalancesmb.com/conservation-efforts-why-should-we-save-water-3157877");
-                    },
-                    child: Text(
-                      "5 Reasons We Should Care About Saving Water",
-                      style: TextStyle(
-                          fontSize: 20,
-                          decoration: TextDecoration.underline,
-                          color: Colors.blueAccent),
-                    )),
-                GestureDetector(
-                    onTap: () {
-                      _launchURL(
-                          "https://www.volusia.org/services/growth-and-resource-management/environmental-management/natural-resources/water-conservation/25-ways-to-save-water.stml");
-                    },
-                    child: Text(
-                      " 25 ways to save water",
-                      style: TextStyle(
-                          fontSize: 20,
-                          decoration: TextDecoration.underline,
-                          color: Colors.blueAccent),
-                    )),
-              ],
-            ),
-          )),
+        headerValue: "Useful resources",
+        body: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              GestureDetector(
+                  onTap: () {
+                    _launchURL("https://www.constellation.com/energy-101/water-conservation-tips0.html");
+                  },
+                  child: Text(
+                    "Information on vegetables",
+                    style: TextStyle(fontSize: 20, decoration: TextDecoration.underline, color: Colors.blueAccent),
+                  )),
+              GestureDetector(
+                  onTap: () {
+                    _launchURL("https://wateruseitwisely.com/");
+                  },
+                  child: Text(
+                    "Water Use It Wisely",
+                    style: TextStyle(fontSize: 20, decoration: TextDecoration.underline, color: Colors.blueAccent),
+                  )),
+              GestureDetector(
+                  onTap: () {
+                    _launchURL("https://www.thebalancesmb.com/conservation-efforts-why-should-we-save-water-3157877");
+                  },
+                  child: Text(
+                    "5 Reasons We Should Care About Saving Water",
+                    style: TextStyle(fontSize: 20, decoration: TextDecoration.underline, color: Colors.blueAccent),
+                  )),
+              GestureDetector(
+                  onTap: () {
+                    _launchURL(
+                        "https://www.volusia.org/services/growth-and-resource-management/environmental-management/natural-resources/water-conservation/25-ways-to-save-water.stml");
+                  },
+                  child: Text(
+                    " 25 ways to save water",
+                    style: TextStyle(fontSize: 20, decoration: TextDecoration.underline, color: Colors.blueAccent),
+                  )),
+            ],
+          ),
+        ),
+        isExpanded: true,
+      ),
     ];
   }
+
   @override
   Widget build(BuildContext context) {
     return ListView(
@@ -160,13 +146,11 @@ class _InfoScreenState extends State<InfoScreen> {
           },
           children: widget.infoData?.map<ExpansionPanel>((Item item) {
             return ExpansionPanel(
-              headerBuilder:
-                  (BuildContext context, bool isExpanded) {
+              headerBuilder: (BuildContext context, bool isExpanded) {
                 return ListTile(
                   title: Text(
                     item.headerValue,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold, fontSize: 18),
+                    style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
                   ),
                 );
               },
@@ -179,6 +163,7 @@ class _InfoScreenState extends State<InfoScreen> {
       ],
     );
   }
+
   _launchURL(url) async {
 //  const url = 'https://flutter.dev';
     if (await canLaunch(url)) {

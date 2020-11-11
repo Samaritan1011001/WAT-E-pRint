@@ -10,7 +10,7 @@ class SettingsScreen extends StatefulWidget {
   DateTime selectedDate;
 
 
-  SettingsScreen({Key key,this.placeholderValue,this.selectedDate,this.swi}) : super(key: key);
+  SettingsScreen({Key key, this.selectedDate,this.swi}) : super(key: key);
 
   @override
   _SettingsScreenState createState() => _SettingsScreenState();
@@ -94,25 +94,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           thickness: 5,
         ),
 
-        ListTile(
-//                    padding: const EdgeInsets.all(50.0),
-          leading: FlatButton(
-              onPressed: () async {
-                final DateTime picked = await showDatePicker(
-                    context: context,
-                    initialDate: widget.selectedDate,
-                    firstDate: DateTime(2015, 8),
-                    lastDate: DateTime(2101));
-                if (picked != null && picked != widget.selectedDate)
-                  setState(() {
-                    widget.selectedDate = picked;
-                  });
-              },
-              child: Text(
-                "${widget.selectedDate.toLocal()}".split(' ')[0],
-                style: TextStyle(fontSize: 23),
-              )),
-        ),
+
       ],
     );
   }

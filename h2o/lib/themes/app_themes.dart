@@ -17,8 +17,9 @@ final appThemeData = {
       headline2: TextStyle(
           fontSize: 20,
           fontWeight: FontWeight.bold,
-          color: Colors.grey[600])
-    )
+          color: Colors.grey[600]),
+    ),
+    canvasColor: Colors.white,
   ),
   AppTheme.DarkTheme:ThemeData(
     brightness: Brightness.dark,
@@ -31,6 +32,8 @@ final appThemeData = {
             fontSize: 20,
             fontWeight: FontWeight.bold,
             color: Colors.white)
-      )
+      ),
+    canvasColor: Colors.black,
+
   ),
 };
