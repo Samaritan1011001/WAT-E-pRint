@@ -31,7 +31,7 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider<FootPrintBloc>(
-          create: (BuildContext context) => FootPrintBloc(),
+          create: (BuildContext context) => FootPrintBloc(0.0),
         ),
         BlocProvider<ThemeBloc>(
           create: (BuildContext context) => ThemeBloc(),

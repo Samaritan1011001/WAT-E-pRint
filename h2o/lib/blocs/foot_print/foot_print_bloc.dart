@@ -11,13 +11,14 @@ part 'foot_print_event.dart';
 part 'foot_print_state.dart';
 
 class FootPrintBloc extends Bloc<FootPrintEvent, FootPrintState> {
-  @override
-  FootPrintState get initialState => InitialFootPrintState(0);
+  FootPrintBloc(double initialState) : super(InitialFootPrintState(initialState));
+
+//  @override
+//  FootPrintState get initialState => InitialFootPrintState(0);
 
   @override
   Stream<FootPrintState> mapEventToState(FootPrintEvent event) async* {
     if (event is UpdateFootPrint){
-//      yield NewItem();
       yield* _mapItemAddedToState(event);
     }
   }
