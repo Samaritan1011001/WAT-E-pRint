@@ -10,6 +10,9 @@ import 'package:h2o/screens/stats_screen.dart';
 
 import 'info_screen.dart';
 
+
+/// The landing screen that has 5 tabs.
+/// This screen also uses SliverAppBar and NestedScrollView widgets to host all the five tabViews
 class HomeScreen extends StatefulWidget {
   HomeScreen({Key key}) : super(key: key);
 

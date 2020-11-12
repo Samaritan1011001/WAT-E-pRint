@@ -10,12 +10,9 @@ part 'foot_print_event.dart';
 
 part 'foot_print_state.dart';
 
+/// Bloc used to perform state updates on FootPrint
 class FootPrintBloc extends Bloc<FootPrintEvent, FootPrintState> {
   FootPrintBloc(double initialState) : super(InitialFootPrintState(initialState));
-
-//  @override
-//  FootPrintState get initialState => InitialFootPrintState(0);
-
   @override
   Stream<FootPrintState> mapEventToState(FootPrintEvent event) async* {
     if (event is UpdateFootPrint){
@@ -32,6 +29,5 @@ class FootPrintBloc extends Bloc<FootPrintEvent, FootPrintState> {
 
     print("result : ${result}");
     yield UpdatedFootPrint(totConsumption:double.parse((result).toStringAsFixed(2)));
-//    yield NewItem(totConsumption:double.parse((0).toStringAsFixed(2)));
   }
 }

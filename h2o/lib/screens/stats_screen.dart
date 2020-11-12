@@ -6,6 +6,8 @@ import 'package:h2o/blocs/foot_print/theme/theme_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+
+/// Stats screen that shows basic stats/graphs on user's consumption based on inputs in the [AddScreen] tab
 class StatsScreen extends StatelessWidget {
 //  double totConsumption = 0;
 //  Widget chartWidget;
@@ -24,22 +26,10 @@ class StatsScreen extends StatelessWidget {
         if (state.totConsumption != 0) {
           return ListView(
             children: <Widget>[
-              Row(
-                mainAxisAlignment: MainAxisAlignment.end,
-                children: <Widget>[
-                  Icon(Icons.trending_up, color: Colors.grey[600]),
-                  Text(
-                    "${double.parse((((state.totConsumption - 90) / 90) * 100).toStringAsFixed(2))}% from last days",
-                    style: BlocProvider.of<ThemeBloc>(context).state.themeData.textTheme.headline2,
-                  ),
-                ],
-              ),
               _buildChart([new GallonsPerDay(DateFormat('EE d MMM').format(DateTime.now()), state.totConsumption)]),
             ],
           );
         } else if (state.totConsumption == null) {
-          return Text("Add an item to view stats");
-        } else {
           return Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
@@ -57,6 +47,8 @@ class StatsScreen extends StatelessWidget {
               ],
             ),
           );
+        } else {
+          return Center(child: Text("Add your consumption to view stats",style: TextStyle(fontSize: 20),));
         }
       },
     );

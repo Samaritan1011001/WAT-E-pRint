@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:h2o/blocs/foot_print/foot_print_bloc.dart';
+import 'package:h2o/screens/add_screen.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
+/// A goal tracker screen for users to keep track of their water footprint and uses the footPrint state updated in the [AddScreen]
 class GoalsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

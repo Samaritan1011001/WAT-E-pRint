@@ -19,9 +19,9 @@ class SettingsScreen extends StatefulWidget {
 class _SettingsScreenState extends State<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-      crossAxisAlignment: CrossAxisAlignment.start,
+    return ListView(
+//      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+//      crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         ListTile(
           title: Text(
@@ -35,15 +35,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 onChanged: (changedValue) {
                   BlocProvider.of<ThemeBloc>(context)
                       .add(ThemeChanged(switchVal:state.switchValue, theme: !widget.darkModeSwitch?AppTheme.DarkTheme:AppTheme.LightTheme));
-//                setState(() {
-//                  widget.darkModeSwitch = !widget.darkModeSwitch;
-//                });
                 });
           }
           ),
         ),
         Divider(
-          thickness: 5,
+          thickness: 2,
         ),
         ListTile(
           title: Text(
@@ -59,7 +56,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
               }),
         ),
         Divider(
-          thickness: 5,
+          thickness: 2,
         ),
 
         ListTile(
@@ -78,7 +75,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 value: value,
                 child: new Text(
                   value,
-                  /// Weird behaviour where only here inside the dropmenuitem, I have to explicitly provide a test style or else it's just white.
                   style: BlocProvider.of<ThemeBloc>(context).state.themeData.textTheme.headline1,
                 ),
               );
@@ -90,11 +86,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
             },
           ),
         ),
-        Divider(
-          thickness: 5,
-        ),
-
-
       ],
     );
   }

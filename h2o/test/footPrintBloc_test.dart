@@ -1,7 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:h2o/blocs/foot_print/foot_print_bloc.dart';
 //import 'package:test/test.dart';
 import 'package:bloc_test/bloc_test.dart';
+import 'package:h2o/main.dart';
+import 'package:h2o/screens/add_screen.dart';
+import 'package:h2o/screens/home_screen.dart';
 
 void main() {
   FootPrintBloc footPrintBloc;
@@ -17,7 +21,7 @@ void main() {
     expect(footPrintBloc.state, isA<InitialFootPrintState>());
   });
 
-  group('Add consumption', () {
+  group('BLOC TESTS: Add consumption', () {
     blocTest(
       'Emits Updated Water Foot Print',
       build: () => footPrintBloc,
@@ -34,5 +38,15 @@ void main() {
       expect: [isA<UpdatedFootPrint>()],
     );
   });
+  group('WIDGET TESTS:', () {
+    testWidgets('MyWidget has a title and message', (WidgetTester tester) async {
+      await tester.pumpWidget(MyApp());
+      final titleFinder = find.text('Daily Water Use');
+      final submitFinder = find.text('Goals');
+      expect(titleFinder, findsOneWidget);
+      expect(submitFinder, findsOneWidget);
+    });
+  });
+
 
 }

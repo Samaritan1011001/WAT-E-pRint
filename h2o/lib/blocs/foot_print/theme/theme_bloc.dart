@@ -9,6 +9,7 @@ part 'theme_event.dart';
 
 part 'theme_state.dart';
 
+/// Bloc used to perform Theme change updates in the app
 class ThemeBloc extends Bloc<ThemeEvent, ThemeState> {
   ThemeBloc() : super(InitialThemeState(false,appThemeData[AppTheme.LightTheme]));
 

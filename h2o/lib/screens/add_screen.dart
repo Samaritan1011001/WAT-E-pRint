@@ -4,38 +4,10 @@ import 'package:h2o/blocs/foot_print/foot_print_bloc.dart';
 import 'package:h2o/main.dart';
 import 'package:intl/intl.dart';
 
-Map mapData =
-  {
-    "id": "1",
-    "date": DateTime.now(),
-    "sections": [
-      {
-        "name": "Food",
-        "isExpanded": false,
-        "question_answers": {
-          "Cereal Products": "0.0",
-          "Meat products": "0.0",
-          "Dairy products": "0.0",
-          "Eggs": "0.0",
-          "Vegetables": "0.0",
-          "Fruits": "0.0",
-          "Starchy roots (potatoes, cassava)": "0.0",
-          "How many cups of coffee do you take per day?": "0.0",
-        }
-      },
-      {
-        "name": "Indoor Activities",
-        "isExpanded": false,
-        "question_answers": {"How many baths per day?": "0.0"},
-      },
-      {
-        "name": "Outdoor Activities",
-        "isExpanded": false,
-        "question_answers": {"How many car washes per week?": "0.0"},
-      },
-    ],
-  };
-
+/// Important tab among the 5. Some features include,
+/// - Select a date time
+/// - Update values for each of the items
+/// - Submit button to update the state footPrint
 class AddScreen extends StatefulWidget {
   AddScreen();
   List<GlobalKey<FormState>> formKeys = [];
@@ -161,6 +133,38 @@ class _AddScreenState extends State<AddScreen> {
     );
   }
 }
+
+Map mapData =
+{
+  "id": "1",
+  "date": DateTime.now(),
+  "sections": [
+    {
+      "name": "Food",
+      "isExpanded": false,
+      "question_answers": {
+        "Cereal Products": "0.0",
+        "Meat products": "0.0",
+        "Dairy products": "0.0",
+        "Eggs": "0.0",
+        "Vegetables": "0.0",
+        "Fruits": "0.0",
+        "Starchy roots (potatoes, cassava)": "0.0",
+        "How many cups of coffee do you take per day?": "0.0",
+      }
+    },
+    {
+      "name": "Indoor Activities",
+      "isExpanded": false,
+      "question_answers": {"How many baths per day?": "0.0"},
+    },
+    {
+      "name": "Outdoor Activities",
+      "isExpanded": false,
+      "question_answers": {"How many car washes per week?": "0.0"},
+    },
+  ],
+};
 
 //_handleFormSubmit(local_bloc) async {
 //  Map ans = {};

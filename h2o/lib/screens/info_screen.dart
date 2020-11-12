@@ -3,6 +3,8 @@ import 'package:h2o/main.dart';
 import 'package:h2o/models/item.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+
+/// General Info screen that also has an expanded list tile with useful links [static screen]
 class InfoScreen extends StatefulWidget {
   List<Item> infoData = [];
   @override
