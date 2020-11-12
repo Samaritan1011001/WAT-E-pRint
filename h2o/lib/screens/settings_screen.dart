@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:h2o/blocs/foot_print/theme/theme_bloc.dart';
+import 'package:h2o/blocs/theme/theme_bloc.dart';
 import 'package:h2o/themes/app_themes.dart';
 
 class SettingsScreen extends StatefulWidget {
@@ -31,6 +31,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           trailing: BlocBuilder<ThemeBloc, ThemeState>(
           builder: (context, state) {
             return Switch(
+              key: Key("dark-mode"),
                 value: state.switchValue,
                 onChanged: (changedValue) {
                   BlocProvider.of<ThemeBloc>(context)

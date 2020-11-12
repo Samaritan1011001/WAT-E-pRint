@@ -4,7 +4,7 @@ import 'dart:math';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:h2o/blocs/foot_print/foot_print_bloc.dart';
-import 'package:h2o/blocs/foot_print/theme/theme_bloc.dart';
+import 'package:h2o/blocs/theme/theme_bloc.dart';
 import 'package:h2o/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 

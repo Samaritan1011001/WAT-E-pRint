@@ -2,10 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:h2o/blocs/foot_print/foot_print_bloc.dart';
 import 'package:charts_flutter/flutter.dart' as charts;
-import 'package:h2o/blocs/foot_print/theme/theme_bloc.dart';
+import 'package:h2o/blocs/theme/theme_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 
 /// Stats screen that shows basic stats/graphs on user's consumption based on inputs in the [AddScreen] tab
 class StatsScreen extends StatelessWidget {
@@ -26,6 +25,16 @@ class StatsScreen extends StatelessWidget {
         if (state.totConsumption != 0) {
           return ListView(
             children: <Widget>[
+              Align(
+                  alignment: Alignment.centerRight,
+                  child: Padding(
+                    padding: const EdgeInsets.only(right: 20.0),
+                    child: Text(
+                      "Daily Chart",
+                      key:Key("daily-chart"),
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                  )),
               _buildChart([new GallonsPerDay(DateFormat('EE d MMM').format(DateTime.now()), state.totConsumption)]),
             ],
           );
@@ -48,7 +57,12 @@ class StatsScreen extends StatelessWidget {
             ),
           );
         } else {
-          return Center(child: Text("Add your consumption to view stats",style: TextStyle(fontSize: 20),));
+          return Center(
+              child: Text(
+            "Add your consumption to view stats",
+            key: Key("empty_stats"),
+            style: TextStyle(fontSize: 20),
+          ));
         }
       },
     );

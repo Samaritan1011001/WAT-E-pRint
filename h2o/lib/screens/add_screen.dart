@@ -60,6 +60,7 @@ class _AddScreenState extends State<AddScreen> {
                   style: TextStyle(fontSize: 23),
                 )),
             trailing: FlatButton(
+              key: Key("Submit"),
               onPressed: () {
                 Map questionAnswers = {};
 //                  int ind = mapData.indexWhere((data)=>data["id"]==DateFormat('EE d MMM').format(DateTime.now()));
@@ -89,6 +90,7 @@ class _AddScreenState extends State<AddScreen> {
                 isExpanded: item['isExpanded'],
                 headerBuilder: (BuildContext context, bool isExpanded) {
                   return ListTile(
+                    key: Key(item['name']),
                     title: Text(
                       item['name'],
                       style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
@@ -108,6 +110,7 @@ class _AddScreenState extends State<AddScreen> {
                             SizedBox(
                               width: 50.0,
                               child: TextFormField(
+                                key: Key(q),
                                 keyboardType: TextInputType.number,
                                 initialValue: item['question_answers'][q],
                                 onSaved: (text) {

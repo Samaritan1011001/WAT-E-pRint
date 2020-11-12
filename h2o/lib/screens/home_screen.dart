@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:h2o/blocs/foot_print/foot_print_bloc.dart';
-import 'package:h2o/blocs/foot_print/theme/theme_bloc.dart';
+import 'package:h2o/blocs/theme/theme_bloc.dart';
 import 'package:h2o/models/item.dart';
 import 'package:h2o/screens/add_screen.dart';
 import 'package:h2o/screens/goals_screen.dart';
@@ -9,7 +9,6 @@ import 'package:h2o/screens/settings_screen.dart';
 import 'package:h2o/screens/stats_screen.dart';
 
 import 'info_screen.dart';
-
 
 /// The landing screen that has 5 tabs.
 /// This screen also uses SliverAppBar and NestedScrollView widgets to host all the five tabViews
@@ -68,6 +67,7 @@ class _MyHomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                         Container(
+                          key:Key("text-container"),
                             padding: EdgeInsets.all(2),
                             decoration: BoxDecoration(
                               color: Theme.of(context).canvasColor,
@@ -99,24 +99,30 @@ class _MyHomeScreenState extends State<HomeScreen> {
           ),
         ),
         bottomNavigationBar: TabBar(
+          key: Key('bottom'),
           tabs: [
             Tab(
+              key: Key('stats'),
               icon: Icon(Icons.score),
               text: "Stats",
             ),
             Tab(
+              key: Key('info'),
               icon: Icon(Icons.info_outline),
               text: "Info",
             ),
             Tab(
+              key: Key('add'),
               icon: Icon(Icons.add),
               text: "Add",
             ),
             Tab(
+              key: Key('goals'),
               icon: Icon(Icons.format_list_bulleted),
               text: "Goals",
             ),
             Tab(
+              key: Key('settings'),
               icon: Icon(Icons.settings),
               text: "Settings",
             ),
